@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.router import router as auth_router
+from app.modules.calendar.router import router as calendar_router
 from app.modules.goals.router import router as goals_router
 from app.modules.tasks.router import router as tasks_router
 
@@ -45,6 +46,7 @@ async def health_check() -> dict:
 app.include_router(auth_router)
 app.include_router(goals_router)
 app.include_router(tasks_router)
+app.include_router(calendar_router)
 
-# Kelajakdagi modullar (Calendar, Finance, Habits, ...) shu yerga
+# Kelajakdagi modullar (Finance, Habits, Notifications, ...) shu yerga
 # xuddi shu naqsh bilan qo'shiladi.
