@@ -1,0 +1,41 @@
+# 10-Qavat (Production Deploy): tekin cron-ping.
+#
+# Har chaqiruv `/health/db` endpointiga so'rov yuboradi (backend orqali,
+# haqiqiy `SELECT 1` bilan) — bitta ping ikkita muammoni hal qiladi
+# (qoshimcha-qarorlar.md, 5-bo'lim):
+#   1. Render (free) — 15 daqiqa harakatsizlikdan keyin "uxlaydi".
+#   2. Supabase (free) — 7 kun harakatsizlikdan keyin loyihani "pauza"ga
+#      qo'yadi.
+#
+# Repo public bo'lgani uchun GitHub Actions standart runner'lari **tekin va
+# cheklovsiz** (public repolarda minute-limit yo'q) — shuning uchun $0-
+# byudjetga zid emas (qoshimcha-qarorlar.md, 5-bo'lim).
+#
+# SOZLASH: pastdagi PING_URL manzilini haqiqiy Render backend URL'iga
+# almashtiring (masalan https://personal-os-backend.onrender.com/health/db).
+
+name: Keep-alive ping
+
+on:
+  schedule:
+    # Har 6 soatda bir marta — Render'ning 15 daqiqalik uyqusidan tez-tez
+    # uyg'otish shart emas (shaxsiy foydalanishda sovuq start bir necha
+    # soniya kutish bilan qabul qilinadi), lekin Supabase'ning 7 kunlik
+    # pauza chegarasidan ancha xavfsiz masofada turadi.
+    - cron: "0 */6 * * *"
+  # Qo'lda ham ishga tushirish mumkin (Actions sahifasidan "Run workflow").
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend /health/db
+        env:
+          PING_URL: ${{ vars.KEEP_ALIVE_URL || 'https://personal-os-backend.onrender.com/health/db' }}
+        run: |
+          echo "Ping: $PING_URL"
+          # -f: HTTP xato kodida (4xx/5xx) muvaffaqiyatsiz deb belgilaydi
+          # --retry: Render sovuq-start paytida bir necha soniya kutishi
+          # mumkin, shuning uchun bir necha marta qayta urinadi
+          curl -fsS --retry 5 --retry-delay 10 --max-time 60 "$PING_URL"

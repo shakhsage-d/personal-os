@@ -1,0 +1,82 @@
+# Render Blueprint — Personal OS (10-Qavat: Production Deploy)
+#
+# Bu fayl orqali Render'da ikkita xizmat bir vaqtda yaratiladi:
+#   1. personal-os-backend  — FastAPI (Python, free web service)
+#   2. personal-os-frontend — React build (static site)
+#
+# QO'LLASH:
+#   Render Dashboard → New → Blueprint → shu repo'ni tanlang →
+#   Render avtomatik shu faylni o'qib ikkala xizmatni taklif qiladi.
+#
+# MUHIM — qo'lda to'ldirilishi kerak bo'lgan qiymatlar (`sync: false`):
+#   - DATABASE_URL   → Supabase connection string (personal_os_app roli bilan,
+#                      qoshimcha-qarorlar.md 4-bo'lim / backend/.env.example'ga
+#                      muvofiq — SUPERUSER EMAS, aks holda RLS chetlab o'tiladi)
+#   - CORS_ORIGINS   → frontend'ning haqiqiy Render URL'i (masalan
+#                      https://personal-os-frontend.onrender.com), deploy
+#                      qilingandan keyin ma'lum bo'ladi
+#   - VITE_API_BASE_URL → backend'ning haqiqiy Render URL'i
+#   Bu ikkala URL bir-biriga bog'liq bo'lgani uchun: avval ikkalasini ham
+#   bo'sh/vaqtinchalik qiymat bilan deploy qiling, URL'lar ma'lum bo'lgach,
+#   ikkalasini to'g'rilab qayta deploy qiling (Render env var o'zgarganda
+#   avtomatik qayta deploy qiladi).
+#
+# Python 3.14 haqida eslatma: bu versiya juda yangi (qoshimcha-qarorlar.md,
+# 1-bo'lim). Deploy qilishdan oldin Render'ning joriy Python versiyalari
+# ro'yxatini (Dashboard → Environment) tekshiring — agar 3.14 hali qo'llab-
+# quvvatlanmasa, PYTHON_VERSION'ni vaqtincha 3.12/3.13'ga tushiring (kod
+# o'zi versiyaga bog'liq emas, faqat build muhiti masalasi).
+
+services:
+  # --- 1. BACKEND: FastAPI ---
+  - type: web
+    name: personal-os-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    # `alembic upgrade head` har deploy'da ishga tushadi — bu xavfsiz, chunki
+    # migratsiyalar idempotent (allaqachon qo'llangan migratsiya qayta
+    # ishlamaydi). `--workers 1` — MUHIM: APScheduler (app/core/scheduler.py)
+    # in-process ishlaydi; agar bir nechta worker/instance bo'lsa, notification
+    # trigger'lari bir necha marta ishga tushadi. Bitta instance + bitta
+    # worker — $0-byudjet arxitekturasi uchun ham to'g'ri (qoshimcha-
+    # qarorlar.md, 3 va 5-bo'lim).
+    startCommand: "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1"
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.14.0"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: JWT_REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        sync: false
+
+  # --- 2. FRONTEND: React (Vite) static build ---
+  - type: web
+    name: personal-os-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false
+    # Kelajakda client-side routing (masalan react-router) qo'shilsa, SPA
+    # fallback shart bo'ladi — hozir App bitta sahifa/tab-based bo'lgani
+    # uchun ortiqcha, lekin zararsiz xavfsizlik to'ri sifatida qoldirildi.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

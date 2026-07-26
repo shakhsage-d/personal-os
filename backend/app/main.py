@@ -7,10 +7,13 @@ Yangi modul qo'shish uchun:
 
 Mavjud kodni o'zgartirish shart emas — faqat shu 2 qatorni qo'shish kifoya.
 """
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from app.core.database import get_db
 from app.core.errors import register_error_handlers
 from app.core.router import router as auth_router
 from app.core.scheduler import start_scheduler, stop_scheduler
@@ -43,8 +46,23 @@ app.add_middleware(
 
 @app.get("/health", tags=["system"])
 async def health_check() -> dict:
-    """Servis ishlab turganini tekshirish uchun oddiy endpoint."""
+    """Servis ishlab turganini tekshirish uchun oddiy endpoint (DB'ga tegmaydi)."""
     return {"status": "ok", "environment": settings.environment}
+
+
+@app.get("/health/db", tags=["system"])
+async def health_check_db(db: AsyncSession = Depends(get_db)) -> dict:
+    """
+    10-Qavat (Production Deploy): DB'ga haqiqiy so'rov yuboradigan health-check.
+
+    Auth talab qilinmaydi — faqat `SELECT 1`, hech qanday maxfiy ma'lumot
+    qaytarmaydi. Maqsad: GitHub Actions cron-ping (`.github/workflows/
+    keep-alive.yml`) shu endpointga so'rov yuborib, bitta chaqiruv bilan ham
+    Render'ni (15 daqiqa uyqu), ham Supabase'ni (7 kun pauza) faol saqlaydi
+    (qoshimcha-qarorlar.md, 5-bo'lim).
+    """
+    await db.execute(text("SELECT 1"))
+    return {"status": "ok", "database": "reachable"}
 
 
 # --- Modul routerlari shu yerga ro'yxatga olinadi ---
