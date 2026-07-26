@@ -15,6 +15,7 @@ from app.core.errors import register_error_handlers
 from app.core.router import router as auth_router
 from app.core.scheduler import start_scheduler, stop_scheduler
 from app.modules.calendar.router import router as calendar_router
+from app.modules.dashboard.router import router as dashboard_router
 from app.modules.finance.router import router as finance_router
 from app.modules.goals.router import router as goals_router
 from app.modules.habits.router import router as habits_router
@@ -54,6 +55,7 @@ app.include_router(calendar_router)
 app.include_router(finance_router)
 app.include_router(habits_router)
 app.include_router(notifications_router)
+app.include_router(dashboard_router)
 
 # Kelajakdagi modullar shu yerga xuddi shu naqsh bilan qo'shiladi.
 

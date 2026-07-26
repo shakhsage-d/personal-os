@@ -1156,6 +1156,105 @@ body {
 }
 
 /* ============================================================
+   8-Qavat: Dashboard — barcha modullarning umumiy ko'rinishi
+   ============================================================ */
+.dashboard-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  text-align: left;
+}
+
+.dash-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.dash-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dash-card-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.dash-header-hint {
+  font-size: 0.8rem;
+}
+
+.dash-stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  font-size: 0.9rem;
+}
+
+.dash-stat strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-stat-warning {
+  color: #c0392b;
+}
+
+.dash-stat-positive {
+  color: #15803d;
+}
+
+.dash-mini-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dash-mini-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 0.4rem;
+}
+
+.dash-mini-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.dash-mini-title {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-mini-meta {
+  color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ============================================================
    MOBIL BRAUZER UCHUN ASOSIY QOIDA (barcha modullar shunga amal
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
    ============================================================ */
@@ -1384,5 +1483,21 @@ body {
 
   .notification-item-actions {
     justify-content: space-between;
+  }
+
+  .dashboard-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-mini-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
   }
 }
