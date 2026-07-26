@@ -789,6 +789,243 @@ body {
 }
 
 /* ============================================================
+   6-Qavat: Habits (Personal Growth) moduli
+   ============================================================ */
+.habits-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.habits-toolbar h2 {
+  margin: 0;
+}
+
+.habits-show-inactive {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.habit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.habit-form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.habit-form-row label {
+  flex: 1;
+  min-width: 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.habit-form-name {
+  flex: 2;
+}
+
+.habit-form input,
+.habit-form select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.habit-list {
+  list-style: none;
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.habit-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.habit-card-inactive {
+  opacity: 0.55;
+}
+
+.habit-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.habit-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.habit-card-name {
+  font-weight: 600;
+}
+
+.habit-frequency-tag {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #6d28d9;
+  white-space: nowrap;
+}
+
+.habit-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.habit-streak-current {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.habit-streak-longest {
+  color: #444;
+}
+
+.habit-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.habit-checkin-done {
+  background: #15803d;
+  color: #fff;
+  border-color: #15803d;
+}
+
+.habits-side-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.habits-side-panel {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.habits-side-panel h3 {
+  margin-top: 0;
+  font-size: 0.95rem;
+}
+
+.reading-log-form,
+.weekly-review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.reading-log-form input,
+.weekly-review-form textarea,
+.weekly-review-form input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.reading-log-list,
+.weekly-review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reading-log-item,
+.weekly-review-item {
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+}
+
+.reading-log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reading-log-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reading-log-author {
+  font-size: 0.8rem;
+}
+
+.weekly-review-item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.weekly-review-week {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.weekly-review-rating {
+  font-size: 0.78rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.weekly-review-text {
+  font-size: 0.82rem;
+  margin: 0.15rem 0;
+}
+
+/* ============================================================
    MOBIL BRAUZER UCHUN ASOSIY QOIDA (barcha modullar shunga amal
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
    ============================================================ */
@@ -964,5 +1201,41 @@ body {
 
   .transaction-item-actions {
     justify-content: space-between;
+  }
+
+  .habits-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .habit-form-row {
+    flex-direction: column;
+  }
+
+  .habit-form button {
+    width: 100%;
+  }
+
+  .habit-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .habit-card-actions {
+    justify-content: space-between;
+  }
+
+  .habits-side-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reading-log-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reading-log-item-actions select {
+    flex: 1;
   }
 }

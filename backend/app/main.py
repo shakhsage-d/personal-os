@@ -16,6 +16,7 @@ from app.core.router import router as auth_router
 from app.modules.calendar.router import router as calendar_router
 from app.modules.finance.router import router as finance_router
 from app.modules.goals.router import router as goals_router
+from app.modules.habits.router import router as habits_router
 from app.modules.tasks.router import router as tasks_router
 
 settings = get_settings()
@@ -49,6 +50,7 @@ app.include_router(goals_router)
 app.include_router(tasks_router)
 app.include_router(calendar_router)
 app.include_router(finance_router)
+app.include_router(habits_router)
 
-# Kelajakdagi modullar (Habits, Notifications, ...) shu yerga
+# Kelajakdagi modullar (Notifications, ...) shu yerga
 # xuddi shu naqsh bilan qo'shiladi.
