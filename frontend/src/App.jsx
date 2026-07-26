@@ -7,6 +7,7 @@ import { TasksPage } from './features/tasks/TasksPage'
 import { CalendarPage } from './features/calendar/CalendarPage'
 import { FinancePage } from './features/finance/FinancePage'
 import { HabitsPage } from './features/habits/HabitsPage'
+import { NotificationsBell } from './features/notifications/NotificationsBell'
 import './App.css'
 
 function AuthenticatedHome({ view, setView }) {
@@ -61,6 +62,7 @@ function AuthenticatedHome({ view, setView }) {
           </button>
         </nav>
         <div className="app-user">
+          <NotificationsBell />
           <span className="muted">{user.full_name || user.email}</span>
           <button onClick={logout}>Chiqish</button>
         </div>

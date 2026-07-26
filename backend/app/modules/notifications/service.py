@@ -1,0 +1,112 @@
+"""
+Notifications moduli — biznes-mantiq qatlami (7-Qavat, Habits moduli
+naqshiga muvofiq).
+
+Xavfsizlik eslatmasi: har bir so'rov `user_id == user.id` bilan
+filtrlanadi (servis darajasidagi himoya) — 0007-migratsiyadagi RLS
+siyosati bilan birga ikki qatlamli himoyani ta'minlaydi
+(qoshimcha-qarorlar.md, 4-bo'lim).
+
+`create_notification` — trigger funksiyalari (`triggers.py`) tomonidan
+chaqiriladigan markaziy yozish nuqtasi. `dedupe_key` orqali unique
+constraint buzilsa (ya'ni bu hodisa uchun bildirishnoma allaqachon
+mavjud), bu xato emas — funksiya jim ravishda `None` qaytaradi.
+"""
+import uuid
+
+from fastapi import HTTPException, status
+from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.models import User
+from app.modules.notifications.models import Notification, NotificationType
+
+_notification_not_found = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND, detail="Bildirishnoma topilmadi"
+)
+
+
+async def create_notification(
+    db: AsyncSession,
+    user_id: uuid.UUID,
+    notif_type: NotificationType,
+    title: str,
+    message: str,
+    dedupe_key: str,
+    related_entity_id: uuid.UUID | None = None,
+) -> Notification | None:
+    """Yangi bildirishnoma yaratadi. Agar shu `dedupe_key` uchun bildirishnoma
+    allaqachon mavjud bo'lsa (masalan avvalgi scheduler yugurishida
+    yaratilgan bo'lsa), `IntegrityError` sokin tutiladi va `None` qaytadi —
+    bu xato emas, oddiy "allaqachon yuborilgan" holati."""
+    notification = Notification(
+        user_id=user_id,
+        type=notif_type,
+        title=title,
+        message=message,
+        dedupe_key=dedupe_key,
+        related_entity_id=related_entity_id,
+    )
+    db.add(notification)
+    try:
+        await db.flush()
+    except IntegrityError:
+        await db.rollback()
+        return None
+    return notification
+
+
+async def list_notifications(
+    db: AsyncSession, user: User, unread_only: bool = False
+) -> list[Notification]:
+    query = select(Notification).where(Notification.user_id == user.id)
+    if unread_only:
+        query = query.where(Notification.is_read.is_(False))
+    query = query.order_by(Notification.created_at.desc())
+    result = await db.execute(query)
+    return list(result.scalars().all())
+
+
+async def get_unread_count(db: AsyncSession, user: User) -> int:
+    result = await db.execute(
+        select(func.count()).select_from(Notification).where(
+            Notification.user_id == user.id, Notification.is_read.is_(False)
+        )
+    )
+    return int(result.scalar_one())
+
+
+async def _get_notification_or_404(
+    db: AsyncSession, user: User, notification_id: uuid.UUID
+) -> Notification:
+    result = await db.execute(
+        select(Notification).where(
+            Notification.id == notification_id, Notification.user_id == user.id
+        )
+    )
+    notification = result.scalar_one_or_none()
+    if notification is None:
+        raise _notification_not_found
+    return notification
+
+
+async def mark_read(db: AsyncSession, user: User, notification_id: uuid.UUID) -> Notification:
+    notification = await _get_notification_or_404(db, user, notification_id)
+    notification.is_read = True
+    await db.commit()
+    await db.refresh(notification)
+    return notification
+
+
+async def mark_all_read(db: AsyncSession, user: User) -> None:
+    notifications = await list_notifications(db, user, unread_only=True)
+    for notification in notifications:
+        notification.is_read = True
+    await db.commit()
+
+
+async def delete_notification(db: AsyncSession, user: User, notification_id: uuid.UUID) -> None:
+    notification = await _get_notification_or_404(db, user, notification_id)
+    await db.delete(notification)
+    await db.commit()

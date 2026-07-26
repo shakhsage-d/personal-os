@@ -13,10 +13,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.router import router as auth_router
+from app.core.scheduler import start_scheduler, stop_scheduler
 from app.modules.calendar.router import router as calendar_router
 from app.modules.finance.router import router as finance_router
 from app.modules.goals.router import router as goals_router
 from app.modules.habits.router import router as habits_router
+from app.modules.notifications.router import router as notifications_router
 from app.modules.tasks.router import router as tasks_router
 
 settings = get_settings()
@@ -51,6 +53,17 @@ app.include_router(tasks_router)
 app.include_router(calendar_router)
 app.include_router(finance_router)
 app.include_router(habits_router)
+app.include_router(notifications_router)
 
-# Kelajakdagi modullar (Notifications, ...) shu yerga
-# xuddi shu naqsh bilan qo'shiladi.
+# Kelajakdagi modullar shu yerga xuddi shu naqsh bilan qo'shiladi.
+
+
+# --- APScheduler: in-process background job (qoshimcha-qarorlar.md, 3-bo'lim) ---
+@app.on_event("startup")
+async def _on_startup() -> None:
+    start_scheduler()
+
+
+@app.on_event("shutdown")
+async def _on_shutdown() -> None:
+    stop_scheduler()
