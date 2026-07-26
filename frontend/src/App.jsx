@@ -1,39 +1,59 @@
-import { useEffect, useState } from 'react'
-import { apiClient } from './shared/api/client'
+import { useState } from 'react'
+import { AuthProvider, useAuth } from './shared/auth/AuthContext'
+import { LoginPage } from './features/auth/LoginPage'
+import { RegisterPage } from './features/auth/RegisterPage'
 import './App.css'
 
-function App() {
-  const [health, setHealth] = useState(null)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    apiClient
-      .get('/health')
-      .then(setHealth)
-      .catch((err) => setError(err.message))
-  }, [])
+function AuthenticatedHome() {
+  const { user, logout } = useAuth()
 
   return (
-    <section id="center">
-      <div>
-        <h1>Personal OS</h1>
-        <p>0-Qavat: Loyiha skeletoni</p>
+    <div>
+      <h1>Personal OS</h1>
+      <p>1-Qavat: Core / Auth — tizimga kirdingiz ✅</p>
+      <p>
+        Xush kelibsiz, <strong>{user.full_name || user.email}</strong>!
+      </p>
+      <p className="muted">
+        Foydalanuvchi ID: {user.id}
+        <br />
+        Ro'yxatdan o'tgan sana: {new Date(user.created_at).toLocaleString()}
+      </p>
+      <button onClick={logout}>Chiqish</button>
+    </div>
+  )
+}
 
-        {health && (
-          <p style={{ color: 'green' }}>
-            ✅ Backend ulanishi ishlayapti: {health.status} ({health.environment})
-          </p>
-        )}
-        {error && (
-          <p style={{ color: 'red' }}>
-            ⚠️ Backendga ulanib bo'lmadi: {error}
-            <br />
-            (Backend `uvicorn app.main:app` orqali ishga tushirilganini tekshiring)
-          </p>
-        )}
-        {!health && !error && <p>Backend bilan bog'lanilmoqda...</p>}
-      </div>
+function UnauthenticatedHome() {
+  const [mode, setMode] = useState('login') // 'login' | 'register'
+
+  return (
+    <div>
+      <h1>Personal OS</h1>
+      <p>1-Qavat: Core / Auth</p>
+      {mode === 'login' ? (
+        <LoginPage onSwitchToRegister={() => setMode('register')} />
+      ) : (
+        <RegisterPage onSwitchToLogin={() => setMode('login')} />
+      )}
+    </div>
+  )
+}
+
+function AppContent() {
+  const { isAuthenticated } = useAuth()
+  return (
+    <section id="center">
+      {isAuthenticated ? <AuthenticatedHome /> : <UnauthenticatedHome />}
     </section>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 
