@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
 import { createFinanceApi } from "./api";
 import { CategoryManager } from "./components/CategoryManager";
 import { TransactionForm } from "./components/TransactionForm";
@@ -69,48 +70,84 @@ export function FinancePage() {
   }, [loadAll]);
 
   async function handleCreateCategory(payload) {
-    await financeApi.categories.create(payload);
-    await loadAll();
+    try {
+      await financeApi.categories.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteCategory(categoryId) {
-    await financeApi.categories.remove(categoryId);
-    await loadAll();
+    try {
+      await financeApi.categories.remove(categoryId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleCreateTransaction(payload) {
-    await financeApi.transactions.create(payload);
-    await loadAll();
+    try {
+      await financeApi.transactions.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteTransaction(transactionId) {
-    await financeApi.transactions.remove(transactionId);
-    await loadAll();
+    try {
+      await financeApi.transactions.remove(transactionId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleCreateBudget(payload) {
-    await financeApi.budgets.create(payload);
-    await loadAll();
+    try {
+      await financeApi.budgets.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteBudget(budgetId) {
-    await financeApi.budgets.remove(budgetId);
-    await loadAll();
+    try {
+      await financeApi.budgets.remove(budgetId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleCreateSavingsGoal(payload) {
-    await financeApi.savingsGoals.create(payload);
-    await loadAll();
+    try {
+      await financeApi.savingsGoals.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleUpdateSavingsGoal(goalId, payload) {
-    await financeApi.savingsGoals.update(goalId, payload);
-    await loadAll();
+    try {
+      await financeApi.savingsGoals.update(goalId, payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteSavingsGoal(goalId) {
-    await financeApi.savingsGoals.remove(goalId);
-    await loadAll();
+    try {
+      await financeApi.savingsGoals.remove(goalId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   function shiftMonth(delta) {
@@ -146,8 +183,8 @@ export function FinancePage() {
         </button>
       </div>
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadAll} />
+      {isLoading && <Spinner />}
 
       {showCategoryManager && (
         <CategoryManager
@@ -201,7 +238,7 @@ export function FinancePage() {
           <TransactionForm categories={categories} onSubmit={handleCreateTransaction} />
 
           {!isLoading && transactions.length === 0 && (
-            <p className="muted">Shu oyda hali tranzaksiya yo'q.</p>
+            <EmptyState icon="💳" title="Shu oyda hali tranzaksiya yo'q" />
           )}
 
           <ul className="transaction-list">

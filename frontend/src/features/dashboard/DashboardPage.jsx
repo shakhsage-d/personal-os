@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, ErrorBanner } from "../../shared/ui/Feedback";
 import { createDashboardApi } from "./api";
 import { GoalsWidget } from "./components/GoalsWidget";
 import { TasksWidget } from "./components/TasksWidget";
@@ -48,8 +49,8 @@ export function DashboardPage({ onNavigate }) {
         </button>
       </div>
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && !summary && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadSummary} />
+      {isLoading && !summary && <Spinner />}
 
       {summary && (
         <div className="dashboard-grid">

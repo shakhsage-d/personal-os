@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
 import { createNotificationsApi } from "./api";
 
 // 7-Qavat: Notifications — markazlashtirilgan bildirishnomalar markazi
@@ -135,11 +136,13 @@ export function NotificationsBell() {
             </button>
           </div>
 
-          {isLoading && <p className="muted">Yuklanmoqda...</p>}
-          {error && <p className="auth-error">{error}</p>}
+          {isLoading && <Spinner />}
+          <ErrorBanner message={error} onRetry={loadNotifications} />
 
           {!isLoading && notifications.length === 0 && (
-            <p className="muted notifications-empty">Hozircha bildirishnoma yo'q.</p>
+            <div className="notifications-empty">
+              <EmptyState icon="🔔" title="Hozircha bildirishnoma yo'q" />
+            </div>
           )}
 
           <ul className="notifications-list">

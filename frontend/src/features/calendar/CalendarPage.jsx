@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, ErrorBanner } from "../../shared/ui/Feedback";
 import { createCalendarApi } from "./api";
 import { CalendarDayCell } from "./components/CalendarDayCell";
 
@@ -111,8 +112,8 @@ export function CalendarPage() {
         </button>
       </div>
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadEvents} />
+      {isLoading && <Spinner />}
 
       <div className="calendar-grid">
         {WEEKDAY_LABELS.map((label) => (

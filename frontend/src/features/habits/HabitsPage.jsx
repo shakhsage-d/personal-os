@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
 import { createHabitsApi } from "./api";
 import { HabitForm } from "./components/HabitForm";
 import { HabitCard } from "./components/HabitCard";
@@ -44,8 +45,12 @@ export function HabitsPage() {
   }, [loadAll]);
 
   async function handleCreateHabit(payload) {
-    await habitsApi.habits.create(payload);
-    await loadAll();
+    try {
+      await habitsApi.habits.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleToggleToday(habit, todayIso) {
@@ -62,28 +67,48 @@ export function HabitsPage() {
   }
 
   async function handleArchiveToggle(habit) {
-    await habitsApi.habits.update(habit.id, { is_active: !habit.is_active });
-    await loadAll();
+    try {
+      await habitsApi.habits.update(habit.id, { is_active: !habit.is_active });
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteHabit(habit) {
-    await habitsApi.habits.remove(habit.id);
-    await loadAll();
+    try {
+      await habitsApi.habits.remove(habit.id);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleCreateReadingLog(payload) {
-    await habitsApi.readingLogs.create(payload);
-    await loadAll();
+    try {
+      await habitsApi.readingLogs.create(payload);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleUpdateReadingLogStatus(logId, statusValue) {
-    await habitsApi.readingLogs.update(logId, { status: statusValue });
-    await loadAll();
+    try {
+      await habitsApi.readingLogs.update(logId, { status: statusValue });
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteReadingLog(logId) {
-    await habitsApi.readingLogs.remove(logId);
-    await loadAll();
+    try {
+      await habitsApi.readingLogs.remove(logId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleCreateWeeklyReview(payload) {
@@ -96,8 +121,12 @@ export function HabitsPage() {
   }
 
   async function handleDeleteWeeklyReview(reviewId) {
-    await habitsApi.weeklyReviews.remove(reviewId);
-    await loadAll();
+    try {
+      await habitsApi.weeklyReviews.remove(reviewId);
+      await loadAll();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -114,13 +143,13 @@ export function HabitsPage() {
         </label>
       </div>
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadAll} />
+      {isLoading && <Spinner />}
 
       <HabitForm onSubmit={handleCreateHabit} />
 
       {!isLoading && habits.length === 0 && (
-        <p className="muted">Hali odat qo'shilmagan.</p>
+        <EmptyState icon="🔁" title="Hali odat qo'shilmagan" />
       )}
 
       <ul className="habit-list">

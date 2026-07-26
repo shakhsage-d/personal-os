@@ -10,6 +10,183 @@ body {
   margin: 0;
 }
 
+/* ============================================================
+   9-Qavat: Dizayn andozalari (design tokens)
+   Butun ilova shu o'zgaruvchilardan foydalanadi — rang/radius/soyani
+   bir joydan o'zgartirish uchun.
+   ============================================================ */
+:root {
+  --pos-primary: #2563eb;
+  --pos-primary-hover: #1d4ed8;
+  --pos-primary-bg: #eff6ff;
+  --pos-text: #1f2430;
+  --pos-muted: #6b7280;
+  --pos-surface: #ffffff;
+  --pos-surface-muted: #f8f9fa;
+  --pos-border: #e2e2e2;
+  --pos-danger: #b91c1c;
+  --pos-danger-bg: #fef2f2;
+  --pos-danger-border: #fecaca;
+  --pos-radius: 8px;
+  --pos-radius-sm: 6px;
+  --pos-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --pos-transition: 0.15s ease;
+}
+
+/* Umumiy element uslubi — modullar bir xil ko'rinishga ega bo'ladi,
+   har bir komponentga alohida klass qo'shmasdan. Aniqroq klasslar
+   (.link-button, .notifications-bell-button va h.k.) baribir ustun
+   keladi, chunki ularning CSS aniqligi yuqoriroq. */
+button {
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--pos-radius-sm);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-surface);
+  color: var(--pos-text);
+  cursor: pointer;
+  transition: background-color var(--pos-transition), border-color var(--pos-transition),
+    transform 0.05s ease;
+}
+
+button:hover {
+  background: var(--pos-surface-muted);
+  border-color: #c7c7c7;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button[type="submit"],
+.auth-form button[type="submit"] {
+  background: var(--pos-primary);
+  border-color: var(--pos-primary);
+  color: #fff;
+  font-weight: 500;
+}
+
+button[type="submit"]:hover,
+.auth-form button[type="submit"]:hover {
+  background: var(--pos-primary-hover);
+  border-color: var(--pos-primary-hover);
+}
+
+select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea {
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--pos-radius-sm);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-surface);
+  color: var(--pos-text);
+  transition: border-color var(--pos-transition);
+}
+
+select:hover,
+input:hover,
+textarea:hover {
+  border-color: #c7c7c7;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+.link-button:focus-visible {
+  outline: 2px solid var(--pos-primary);
+  outline-offset: 2px;
+}
+
+/* --- Umumiy feedback komponentlari (Spinner / EmptyState / ErrorBanner) --- */
+.feedback-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--pos-muted);
+  font-size: 0.9rem;
+  padding: 0.6rem 0;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  border: 2px solid var(--pos-border);
+  border-top-color: var(--pos-primary);
+  border-radius: 50%;
+  animation: pos-spin 0.7s linear infinite;
+}
+
+@keyframes pos-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.feedback-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+  padding: 2.25rem 1rem;
+  color: var(--pos-muted);
+}
+
+.feedback-empty-icon {
+  font-size: 1.85rem;
+  margin-bottom: 0.15rem;
+}
+
+.feedback-empty-title {
+  font-weight: 500;
+  color: var(--pos-text);
+  margin: 0;
+}
+
+.feedback-empty-hint {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.feedback-error {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--pos-danger-bg);
+  border: 1px solid var(--pos-danger-border);
+  color: var(--pos-danger);
+  border-radius: var(--pos-radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.88rem;
+  margin-bottom: 0.85rem;
+}
+
+.feedback-error-message {
+  flex: 1;
+}
+
+.feedback-error-retry {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  background: #fff;
+  flex-shrink: 0;
+}
+
 #center {
   max-width: 640px;
   margin: 4rem auto;
@@ -1259,6 +1436,19 @@ body {
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
    ============================================================ */
 @media (max-width: 640px) {
+  /* 9-Qavat: barmoq bilan bosish uchun qulay o'lcham + iOS Safari'da
+     input fokusda avtomatik zoom qilishining oldini olish (16px shart). */
+  button:not(.link-button):not(.notifications-bell-button) {
+    min-height: 2.75rem;
+  }
+
+  select,
+  input,
+  textarea,
+  button {
+    font-size: 16px;
+  }
+
   #center {
     margin: 1.5rem auto;
     padding: 0 0.75rem;

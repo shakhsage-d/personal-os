@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
 import { createGoalsApi } from "./api";
 import { GoalForm } from "./components/GoalForm";
 import { GoalCard } from "./components/GoalCard";
@@ -32,40 +33,64 @@ export function GoalsPage() {
   }, [loadGoals]);
 
   async function handleCreate(payload) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.create(payload);
-    setShowForm(false);
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.create(payload);
+      setShowForm(false);
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleUpdateStatus(goalId, newStatus) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.update(goalId, { status: newStatus });
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.update(goalId, { status: newStatus });
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteGoal(goalId) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.remove(goalId);
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.remove(goalId);
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleAddMilestone(goalId, payload) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.addMilestone(goalId, payload);
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.addMilestone(goalId, payload);
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleToggleMilestone(goalId, milestoneId, isCompleted) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.updateMilestone(goalId, milestoneId, { is_completed: isCompleted });
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.updateMilestone(goalId, milestoneId, { is_completed: isCompleted });
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDeleteMilestone(goalId, milestoneId) {
-    const goalsApi = createGoalsApi(authFetch);
-    await goalsApi.removeMilestone(goalId, milestoneId);
-    await loadGoals();
+    try {
+      const goalsApi = createGoalsApi(authFetch);
+      await goalsApi.removeMilestone(goalId, milestoneId);
+      await loadGoals();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -84,10 +109,14 @@ export function GoalsPage() {
 
       {showForm && <GoalForm onSubmit={handleCreate} />}
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadGoals} />
+      {isLoading && <Spinner />}
       {!isLoading && goals.length === 0 && (
-        <p className="muted">Hozircha maqsad yo'q. Birinchi maqsadingizni qo'shing.</p>
+        <EmptyState
+          icon="🎯"
+          title="Hozircha maqsad yo'q"
+          hint="Birinchi maqsadingizni qo'shing."
+        />
       )}
 
       <div className="goals-list">

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
+import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
 import { createGoalsApi } from "../goals/api";
 import { createTasksApi } from "./api";
 import { TaskForm } from "./components/TaskForm";
@@ -51,22 +52,34 @@ export function TasksPage() {
   }, [loadTasks]);
 
   async function handleCreate(payload) {
-    const tasksApi = createTasksApi(authFetch);
-    await tasksApi.create(payload);
-    setShowForm(false);
-    await loadTasks();
+    try {
+      const tasksApi = createTasksApi(authFetch);
+      await tasksApi.create(payload);
+      setShowForm(false);
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleUpdateStatus(taskId, newStatus) {
-    const tasksApi = createTasksApi(authFetch);
-    await tasksApi.update(taskId, { status: newStatus });
-    await loadTasks();
+    try {
+      const tasksApi = createTasksApi(authFetch);
+      await tasksApi.update(taskId, { status: newStatus });
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function handleDelete(taskId) {
-    const tasksApi = createTasksApi(authFetch);
-    await tasksApi.remove(taskId);
-    await loadTasks();
+    try {
+      const tasksApi = createTasksApi(authFetch);
+      await tasksApi.remove(taskId);
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -99,10 +112,14 @@ export function TasksPage() {
 
       {showForm && <TaskForm onSubmit={handleCreate} goals={goals} />}
 
-      {error && <p className="auth-error">{error}</p>}
-      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      <ErrorBanner message={error} onRetry={loadTasks} />
+      {isLoading && <Spinner />}
       {!isLoading && tasks.length === 0 && (
-        <p className="muted">Hozircha vazifa yo'q. Birinchi vazifangizni qo'shing.</p>
+        <EmptyState
+          icon="✅"
+          title="Hozircha vazifa yo'q"
+          hint="Birinchi vazifangizni qo'shing."
+        />
       )}
 
       <ul className="task-list">
