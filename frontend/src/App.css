@@ -238,6 +238,142 @@ body {
   padding-top: 0.75rem;
 }
 
+/* --- 3-Qavat: Tasks moduli --- */
+
+.tasks-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.task-form {
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.task-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.task-form-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.task-form-row label {
+  flex: 1;
+}
+
+.task-form select,
+.task-form input[type="date"] {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.task-list-compact {
+  margin-top: 0.75rem;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+}
+
+.task-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.task-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-title-done {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.task-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.task-priority,
+.task-goal-tag,
+.task-due-date {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #eee;
+  white-space: nowrap;
+}
+
+.task-priority-high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.task-priority-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.task-priority-low {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.task-goal-tag {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.task-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.goal-tasks-section {
+  margin-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 0.75rem;
+}
+
+.goal-tasks-body {
+  margin-top: 0.5rem;
+}
+
 /* ============================================================
    MOBIL BRAUZER UCHUN ASOSIY QOIDA (barcha modullar shunga amal
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
@@ -307,5 +443,33 @@ body {
 
   .goal-card-actions select {
     width: 100%;
+  }
+
+  .tasks-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tasks-toolbar select,
+  .tasks-toolbar button {
+    width: 100%;
+  }
+
+  .task-form-row {
+    flex-direction: column;
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .task-item-actions {
+    justify-content: space-between;
+  }
+
+  .task-item-actions select {
+    flex: 1;
   }
 }

@@ -14,6 +14,7 @@ from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.router import router as auth_router
 from app.modules.goals.router import router as goals_router
+from app.modules.tasks.router import router as tasks_router
 
 settings = get_settings()
 
@@ -43,6 +44,7 @@ async def health_check() -> dict:
 # --- Modul routerlari shu yerga ro'yxatga olinadi ---
 app.include_router(auth_router)
 app.include_router(goals_router)
+app.include_router(tasks_router)
 
-# Kelajakdagi modullar (Tasks, Calendar, Finance, Habits, ...) shu yerga
+# Kelajakdagi modullar (Calendar, Finance, Habits, ...) shu yerga
 # xuddi shu naqsh bilan qo'shiladi.

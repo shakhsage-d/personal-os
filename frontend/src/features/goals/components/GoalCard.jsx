@@ -1,4 +1,11 @@
 import { useState } from "react";
+// MUHIM: bu yagona joy — Goals moduli Tasks modulidan import qiladi.
+// Sabab: roadmap 3-Qavat DoD talabi ("goal sahifasida unga tegishli
+// tasklar ko'rinishi kerak"). Bog'liqlik faqat UI kompozitsiyasi darajasida
+// (bitta import qatori) — Goals'ning backend/model/service qatlami Tasks
+// haqida hech narsa bilmaydi, va bog'liqlik yo'nalishi baribir "Tasks ->
+// Goals" bilan mos (Tasks Goals'ga bog'liq, aksincha emas).
+import { GoalTasksSection } from "../../tasks/components/GoalTasksSection";
 
 const STATUS_LABELS = {
   active: "Faol",
@@ -88,6 +95,8 @@ export function GoalCard({
           Qo'shish
         </button>
       </form>
+
+      <GoalTasksSection goalId={goal.id} />
 
       <div className="goal-card-actions">
         <select value={goal.status} onChange={(e) => onUpdateStatus(e.target.value)}>

@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './shared/auth/AuthContext'
 import { LoginPage } from './features/auth/LoginPage'
 import { RegisterPage } from './features/auth/RegisterPage'
 import { GoalsPage } from './features/goals/GoalsPage'
+import { TasksPage } from './features/tasks/TasksPage'
 import './App.css'
 
 function AuthenticatedHome({ view, setView }) {
@@ -27,6 +28,13 @@ function AuthenticatedHome({ view, setView }) {
           >
             Maqsadlar
           </button>
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => setView('tasks')}
+          >
+            Vazifalar
+          </button>
         </nav>
         <div className="app-user">
           <span className="muted">{user.full_name || user.email}</span>
@@ -46,6 +54,7 @@ function AuthenticatedHome({ view, setView }) {
       )}
 
       {view === 'goals' && <GoalsPage />}
+      {view === 'tasks' && <TasksPage />}
     </div>
   )
 }
@@ -68,7 +77,7 @@ function UnauthenticatedHome() {
 function AppContent() {
   const { isAuthenticated } = useAuth()
   const [view, setView] = useState('goals') // 'home' | 'goals'
-  const isWide = isAuthenticated && view === 'goals'
+  const isWide = isAuthenticated && (view === 'goals' || view === 'tasks')
 
   return (
     <section id="center" className={isWide ? 'wide' : ''}>

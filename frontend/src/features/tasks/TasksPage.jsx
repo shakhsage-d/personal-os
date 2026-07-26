@@ -1,0 +1,120 @@
+import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../../shared/auth/AuthContext";
+import { createGoalsApi } from "../goals/api";
+import { createTasksApi } from "./api";
+import { TaskForm } from "./components/TaskForm";
+import { TaskItem } from "./components/TaskItem";
+
+export function TasksPage() {
+  const { authFetch } = useAuth();
+  const [tasks, setTasks] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [goalFilter, setGoalFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const loadGoals = useCallback(async () => {
+    const goalsApi = createGoalsApi(authFetch);
+    const data = await goalsApi.list();
+    setGoals(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadTasks = useCallback(async () => {
+    const tasksApi = createTasksApi(authFetch);
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await tasksApi.list({
+        goalId: goalFilter || undefined,
+        statusFilter: statusFilter || undefined,
+        priorityFilter: priorityFilter || undefined,
+      });
+      setTasks(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [goalFilter, statusFilter, priorityFilter]);
+
+  useEffect(() => {
+    loadGoals();
+  }, [loadGoals]);
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
+
+  async function handleCreate(payload) {
+    const tasksApi = createTasksApi(authFetch);
+    await tasksApi.create(payload);
+    setShowForm(false);
+    await loadTasks();
+  }
+
+  async function handleUpdateStatus(taskId, newStatus) {
+    const tasksApi = createTasksApi(authFetch);
+    await tasksApi.update(taskId, { status: newStatus });
+    await loadTasks();
+  }
+
+  async function handleDelete(taskId) {
+    const tasksApi = createTasksApi(authFetch);
+    await tasksApi.remove(taskId);
+    await loadTasks();
+  }
+
+  return (
+    <div className="tasks-page">
+      <div className="tasks-toolbar">
+        <select value={goalFilter} onChange={(e) => setGoalFilter(e.target.value)}>
+          <option value="">Barcha maqsadlar</option>
+          {goals.map((goal) => (
+            <option key={goal.id} value={goal.id}>
+              {goal.title}
+            </option>
+          ))}
+        </select>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+          <option value="">Barcha holatlar</option>
+          <option value="todo">Bajarilmagan</option>
+          <option value="in_progress">Jarayonda</option>
+          <option value="done">Bajarilgan</option>
+        </select>
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
+          <option value="">Barcha ustuvorliklar</option>
+          <option value="low">Past</option>
+          <option value="medium">O'rtacha</option>
+          <option value="high">Yuqori</option>
+        </select>
+        <button type="button" onClick={() => setShowForm((v) => !v)}>
+          {showForm ? "Bekor qilish" : "+ Yangi vazifa"}
+        </button>
+      </div>
+
+      {showForm && <TaskForm onSubmit={handleCreate} goals={goals} />}
+
+      {error && <p className="auth-error">{error}</p>}
+      {isLoading && <p className="muted">Yuklanmoqda...</p>}
+      {!isLoading && tasks.length === 0 && (
+        <p className="muted">Hozircha vazifa yo'q. Birinchi vazifangizni qo'shing.</p>
+      )}
+
+      <ul className="task-list">
+        {tasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            onUpdateStatus={(newStatus) => handleUpdateStatus(task.id, newStatus)}
+            onDelete={() => handleDelete(task.id)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+}
