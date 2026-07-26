@@ -481,6 +481,314 @@ body {
 }
 
 /* ============================================================
+   5-Qavat: Finance moduli
+   ============================================================ */
+.finance-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.finance-month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.finance-month-title {
+  font-weight: 600;
+  min-width: 5rem;
+  text-align: center;
+}
+
+.finance-category-manager,
+.finance-budget-panel,
+.finance-savings-panel {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.category-form,
+.budget-form,
+.savings-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.category-form input,
+.category-form select,
+.budget-form select,
+.budget-form input,
+.savings-form input {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.category-list,
+.budget-list,
+.savings-goal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.category-name {
+  flex: 1;
+}
+
+.category-type-tag {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.category-type-income {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.category-type-expense {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.finance-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.finance-summary-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.finance-summary-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.finance-summary-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.finance-summary-income .finance-summary-value {
+  color: #15803d;
+}
+
+.finance-summary-expense .finance-summary-value {
+  color: #b91c1c;
+}
+
+.finance-summary-net-positive .finance-summary-value {
+  color: #1d4ed8;
+}
+
+.finance-summary-net-negative .finance-summary-value {
+  color: #b91c1c;
+}
+
+.finance-charts-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.finance-chart-box {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.finance-chart-box h3 {
+  margin-top: 0;
+  font-size: 0.95rem;
+}
+
+.finance-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.transaction-form-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.transaction-form-row label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.transaction-form input,
+.transaction-form select,
+.transaction-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.transaction-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+}
+
+.transaction-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.transaction-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transaction-amount-income {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.transaction-amount-expense {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.transaction-category-tag {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  white-space: nowrap;
+}
+
+.transaction-description {
+  font-size: 0.8rem;
+}
+
+.transaction-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.transaction-date {
+  font-size: 0.78rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+.budget-item,
+.savings-goal-item {
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+}
+
+.budget-item-header,
+.savings-goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.budget-progress-bar {
+  background: #eee;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.budget-progress-fill {
+  background: #2563eb;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.budget-progress-over {
+  background: #dc2626;
+}
+
+.budget-item-numbers {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.budget-over-label {
+  color: #b91c1c;
+}
+
+.savings-goal-numbers {
+  margin: 0.35rem 0;
+  font-size: 0.8rem;
+}
+
+.savings-deposit-button {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+}
+
+/* ============================================================
    MOBIL BRAUZER UCHUN ASOSIY QOIDA (barcha modullar shunga amal
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
    ============================================================ */
@@ -604,5 +912,57 @@ body {
 
   .calendar-event-type {
     display: none;
+  }
+
+  .finance-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .finance-month-nav {
+    justify-content: space-between;
+  }
+
+  .finance-summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-charts-row {
+    flex-direction: column;
+  }
+
+  .finance-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-form,
+  .budget-form,
+  .savings-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .category-form input,
+  .category-form select,
+  .category-form button,
+  .budget-form select,
+  .budget-form input,
+  .budget-form button,
+  .savings-form input,
+  .savings-form button {
+    width: 100%;
+  }
+
+  .transaction-form-row {
+    flex-direction: column;
+  }
+
+  .transaction-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .transaction-item-actions {
+    justify-content: space-between;
   }
 }

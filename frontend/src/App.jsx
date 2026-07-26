@@ -5,6 +5,7 @@ import { RegisterPage } from './features/auth/RegisterPage'
 import { GoalsPage } from './features/goals/GoalsPage'
 import { TasksPage } from './features/tasks/TasksPage'
 import { CalendarPage } from './features/calendar/CalendarPage'
+import { FinancePage } from './features/finance/FinancePage'
 import './App.css'
 
 function AuthenticatedHome({ view, setView }) {
@@ -43,6 +44,13 @@ function AuthenticatedHome({ view, setView }) {
           >
             Kalendar
           </button>
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => setView('finance')}
+          >
+            Moliya
+          </button>
         </nav>
         <div className="app-user">
           <span className="muted">{user.full_name || user.email}</span>
@@ -64,6 +72,7 @@ function AuthenticatedHome({ view, setView }) {
       {view === 'goals' && <GoalsPage />}
       {view === 'tasks' && <TasksPage />}
       {view === 'calendar' && <CalendarPage />}
+      {view === 'finance' && <FinancePage />}
     </div>
   )
 }
@@ -86,7 +95,7 @@ function UnauthenticatedHome() {
 function AppContent() {
   const { isAuthenticated } = useAuth()
   const [view, setView] = useState('goals') // 'home' | 'goals'
-  const isWide = isAuthenticated && (view === 'goals' || view === 'tasks' || view === 'calendar')
+  const isWide = isAuthenticated && (view === 'goals' || view === 'tasks' || view === 'calendar' || view === 'finance')
 
   return (
     <section id="center" className={isWide ? 'wide' : ''}>
