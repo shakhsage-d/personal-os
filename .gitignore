@@ -1,0 +1,30 @@
+# --- Environment / secrets ---
+.env
+backend/.env
+*.env
+!.env.example
+!backend/.env.example
+
+# --- Python ---
+venv/
+backend/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# --- Node / React ---
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# --- OS / IDE ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Alembic ---
+# (versiyalar saqlanadi, faqat vaqtinchalik fayllar chiqarib tashlanadi)
+*.pyc

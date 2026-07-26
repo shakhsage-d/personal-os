@@ -1,0 +1,20 @@
+# Ixtiyoriy: lokal rivojlanish uchun Postgres.
+# Agar to'g'ridan-to'g'ri Supabase'ga ulanmoqchi bo'lsangiz, bu fayl kerak emas —
+# backend/.env ichidagi DATABASE_URL'ni Supabase ulanish satriga o'zgartiring.
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: personal_os
+    ports:
+      - "5432:5432"
+    volumes:
+      - personal_os_pgdata:/var/lib/postgresql/data
+
+volumes:
+  personal_os_pgdata:
