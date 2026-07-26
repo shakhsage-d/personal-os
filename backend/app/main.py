@@ -11,6 +11,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
+from app.core.errors import register_error_handlers
+from app.core.router import router as auth_router
 
 settings = get_settings()
 
@@ -19,6 +21,8 @@ app = FastAPI(
     description="Shaxsiy boshqaruv tizimi — Goals, Tasks, Calendar, Finance, Habits, Notifications",
     version="0.1.0",
 )
+
+register_error_handlers(app)
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,6 +39,9 @@ async def health_check() -> dict:
     return {"status": "ok", "environment": settings.environment}
 
 
-# --- Modul routerlari shu yerga ro'yxatga olinadi (0-Qavatda hali modul yo'q) ---
-# from app.modules.core.router import router as auth_router
-# app.include_router(auth_router)
+# --- Modul routerlari shu yerga ro'yxatga olinadi ---
+app.include_router(auth_router)
+
+# Kelajakdagi modullar (2-Qavatdan boshlab) shu yerga qo'shiladi:
+# from app.modules.goals.router import router as goals_router
+# app.include_router(goals_router)
