@@ -23,11 +23,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-   
     "extra": {
       "eas": {
-        "projectId": "YOUR-EAS-PROJECT-ID-BUYERDA"
+        "projectId": "5a056cbf-5889-43b5-aa85-188dfc07ae9c"
       }
-    }
+    },
+    "owner": "shakhsages-team"
   }
 }

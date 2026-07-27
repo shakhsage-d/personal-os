@@ -1,0 +1,19 @@
+{
+  "cli": {
+    "version": ">= 5.9.0"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://personal-os-backend-ro7b.onrender.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
