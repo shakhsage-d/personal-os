@@ -20,6 +20,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.models import User
+from app.core.push import send_expo_push_notification
 from app.modules.notifications.models import Notification, NotificationType
 
 _notification_not_found = HTTPException(
@@ -54,6 +55,17 @@ async def create_notification(
     except IntegrityError:
         await db.rollback()
         return None
+
+    # 11-Qavat (Mobil ilova): bildirishnoma birinchi marta yaratilgandagina
+    # (dedupe_key hali mavjud bo'lmagan holatda) push ham yuboriladi — aks
+    # holda takroriy scheduler yugurishlarida bir xil push qayta-qayta
+    # jo'natilib ketardi. Best-effort: xato bo'lsa ham bildirishnoma yozuvi
+    # saqlanib qoladi (push.py o'zi xatoni yutadi, shuning uchun bu yerda
+    # try/except shart emas).
+    result = await db.execute(select(User.push_token).where(User.id == user_id))
+    push_token = result.scalar_one_or_none()
+    await send_expo_push_notification(push_token, title, message)
+
     return notification
 
 

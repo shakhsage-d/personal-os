@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Personal OS",
+    "slug": "personal-os-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "personalos",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.personalos.mobile"
+    },
+    "android": {
+      "package": "com.personalos.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+   
+    "extra": {
+      "eas": {
+        "projectId": "YOUR-EAS-PROJECT-ID-BUYERDA"
+      }
+    }
+  }
+}

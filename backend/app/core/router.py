@@ -14,6 +14,7 @@ from app.core.database import get_db
 from app.core.deps import get_current_user
 from app.core.models import User
 from app.core.schemas_auth import (
+    PushTokenRegister,
     RefreshRequest,
     TokenPair,
     UserLogin,
@@ -100,3 +101,18 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)) -
 @router.get("/me", response_model=UserOut)
 async def read_current_user(current_user: User = Depends(get_current_user)) -> User:
     return current_user
+
+
+@router.post("/push-token", status_code=status.HTTP_204_NO_CONTENT)
+async def register_push_token(
+    payload: PushTokenRegister,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> None:
+    """
+    11-Qavat (Mobil ilova): mobil ilova login bo'lgach o'z Expo push
+    tokenini shu orqali ro'yxatdan o'tkazadi. `notifications/service.py`
+    keyinchalik bildirishnoma yaratganda shu tokenga push yuboradi.
+    """
+    current_user.push_token = payload.push_token
+    await db.commit()

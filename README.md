@@ -3,9 +3,9 @@
 Shaxsiy boshqaruv tizimi — Goals, Tasks, Calendar, Finance, Habits, Notifications, Dashboard.
 
 Loyiha **piramida-roadmap** asosida, qavat-qavat quriladi. To'liq reja uchun `personal-os-roadmap.md`
-fayliga qarang. Hozirgi holat: **0–9-Qavatlar tugallangan** ✅ (Skeleton, Auth, Goals, Tasks, Calendar,
-Finance, Habits, Notifications, Dashboard, UX polish) — hozir **10-Qavat: Production Deploy** ustida
-ishlanmoqda.
+fayliga qarang. Hozirgi holat: **0–10-Qavatlar tugallangan** ✅ (Skeleton, Auth, Goals, Tasks, Calendar,
+Finance, Habits, Notifications, Dashboard, UX polish, Production Deploy) — hozir **11-Qavat: Mobil
+ilova (React Native/Expo)** ustida ishlanmoqda (`mobile/` papkasiga qarang).
 
 ## Tuzilma
 
@@ -23,6 +23,10 @@ personal-os/
     src/
       features/       # har bir modul uchun alohida papka
       shared/         # umumiy komponent/api/hook
+  mobile/             # React Native (Expo) — 11-Qavat, batafsili mobile/README.md'da
+    src/
+      features/
+      shared/
   docker-compose.yml  # ixtiyoriy — lokal Postgres
 ```
 

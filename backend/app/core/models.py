@@ -35,6 +35,11 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
     full_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    # 11-Qavat (Mobil ilova): mobil ilova login bo'lgach o'zining Expo push
+    # tokenini shu ustunga yozadi (`POST /auth/push-token`). Bitta qurilma
+    # kifoya deb hisoblangan (MVP) — kelajakda bir nechta qurilma kerak
+    # bo'lsa, alohida `device_tokens` jadvaliga ko'chiriladi.
+    push_token: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=_utcnow, nullable=False
     )
