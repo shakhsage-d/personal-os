@@ -44,13 +44,13 @@ app.add_middleware(
 )
 
 
-@app.get("/health", tags=["system"])
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["system"])
 async def health_check() -> dict:
     """Servis ishlab turganini tekshirish uchun oddiy endpoint (DB'ga tegmaydi)."""
     return {"status": "ok", "environment": settings.environment}
 
 
-@app.get("/health/db", tags=["system"])
+@app.api_route("/health/db", methods=["GET", "HEAD"], tags=["system"])
 async def health_check_db(db: AsyncSession = Depends(get_db)) -> dict:
     """
     10-Qavat (Production Deploy): DB'ga haqiqiy so'rov yuboradigan health-check.
