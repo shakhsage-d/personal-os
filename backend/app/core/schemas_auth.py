@@ -29,6 +29,13 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
+class PushTokenRegister(BaseModel):
+    # Expo push tokenlari doim "ExponentPushToken[...]" shaklida bo'ladi,
+    # lekin qattiq validatsiya o'rniga faqat uzunlik cheklovi qo'yiladi —
+    # kelajakda boshqa formatdagi tokenlarga (masalan xom FCM) ham moslashuvchan.
+    push_token: str = Field(min_length=1, max_length=255)
+
+
 class TokenPair(BaseModel):
     access_token: str
     refresh_token: str
