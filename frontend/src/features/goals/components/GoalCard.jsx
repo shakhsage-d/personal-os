@@ -6,11 +6,18 @@ import { useState } from "react";
 // haqida hech narsa bilmaydi, va bog'liqlik yo'nalishi baribir "Tasks ->
 // Goals" bilan mos (Tasks Goals'ga bog'liq, aksincha emas).
 import { GoalTasksSection } from "../../tasks/components/GoalTasksSection";
+import { Card, Badge, Select, Button, Input } from "../../../shared/ui";
 
 const STATUS_LABELS = {
   active: "Faol",
   completed: "Bajarilgan",
   archived: "Arxivlangan",
+};
+
+const STATUS_TONES = {
+  active: "info",
+  completed: "success",
+  archived: "neutral",
 };
 
 export function GoalCard({
@@ -40,14 +47,28 @@ export function GoalCard({
   }
 
   return (
-    <article className="goal-card">
-      <div className="goal-card-header">
-        <h3>{goal.title}</h3>
-        <span className={`goal-status goal-status-${goal.status}`}>
-          {STATUS_LABELS[goal.status]}
-        </span>
-      </div>
-
+    <Card
+      className="goal-card"
+      title={goal.title}
+      actions={<Badge tone={STATUS_TONES[goal.status]}>{STATUS_LABELS[goal.status]}</Badge>}
+      footer={
+        <>
+          <Select
+            value={goal.status}
+            onChange={(e) => onUpdateStatus(e.target.value)}
+            aria-label="Maqsad holati"
+            options={[
+              { value: "active", label: "Faol" },
+              { value: "completed", label: "Bajarilgan" },
+              { value: "archived", label: "Arxivlangan" },
+            ]}
+          />
+          <Button variant="ghost" onClick={onDelete}>
+            Maqsadni o'chirish
+          </Button>
+        </>
+      }
+    >
       {goal.description && <p className="muted">{goal.description}</p>}
       {goal.target_date && <p className="muted">Muddat: {goal.target_date}</p>}
 
@@ -73,41 +94,27 @@ export function GoalCard({
                   {milestone.title}
                 </span>
               </label>
-              <button
-                type="button"
-                className="link-button"
-                onClick={() => onDeleteMilestone(milestone.id)}
-              >
+              <Button variant="ghost" onClick={() => onDeleteMilestone(milestone.id)}>
                 o'chirish
-              </button>
+              </Button>
             </li>
           ))}
         </ul>
       )}
 
       <form onSubmit={handleAddMilestone} className="milestone-form">
-        <input
+        <Input
           value={milestoneTitle}
           onChange={(e) => setMilestoneTitle(e.target.value)}
           placeholder="Yangi bosqich qo'shish..."
+          aria-label="Yangi bosqich"
         />
-        <button type="submit" disabled={isAdding}>
+        <Button type="submit" variant="primary" disabled={isAdding}>
           Qo'shish
-        </button>
+        </Button>
       </form>
 
       <GoalTasksSection goalId={goal.id} />
-
-      <div className="goal-card-actions">
-        <select value={goal.status} onChange={(e) => onUpdateStatus(e.target.value)}>
-          <option value="active">Faol</option>
-          <option value="completed">Bajarilgan</option>
-          <option value="archived">Arxivlangan</option>
-        </select>
-        <button type="button" className="link-button" onClick={onDelete}>
-          Maqsadni o'chirish
-        </button>
-      </div>
-    </article>
+    </Card>
   );
 }

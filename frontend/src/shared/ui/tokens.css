@@ -1,0 +1,117 @@
+/* ============================================================
+   13-Qavat: Design System — markazlashtirilgan dizayn tokenlari.
+
+   Bu fayl 9-Qavatda App.css ichida boshlangan `--pos-*` o'zgaruvchilarni
+   (rang, radius, soya) va 12-Qavatda qo'shilgan dark-tema qiymatlarini
+   BIR JOYGA jamlaydi, hech narsani o'zgartirmasdan — faqat joyini
+   ko'chiradi va yetishmayotgan toifalarni (bo'shliq, tipografiya, badge
+   tonlari) qo'shadi.
+
+   Foydalanish qoidasi: shared/ui/ ichidagi HECH BIR komponent hardcoded
+   rang yoki o'lcham ishlatmaydi — faqat shu yerdagi o'zgaruvchilar orqali.
+   Yangi modul/komponent yozilganda ham shu qoidaga amal qilinadi.
+   ============================================================ */
+
+:root {
+  /* --- Ranglar (9-Qavatdan, o'zgarishsiz ko'chirilgan) --- */
+  --pos-primary: #2563eb;
+  --pos-primary-hover: #1d4ed8;
+  --pos-primary-bg: #eff6ff;
+  --pos-text: #1f2430;
+  --pos-muted: #6b7280;
+  --pos-surface: #ffffff;
+  --pos-surface-muted: #f8f9fa;
+  --pos-border: #e2e2e2;
+  --pos-border-hover: #c7c7c7;
+  --pos-danger: #b91c1c;
+  --pos-danger-bg: #fef2f2;
+  --pos-danger-border: #fecaca;
+  --pos-success: #15803d;
+  --pos-success-bg: #dcfce7;
+  --pos-success-border: #bbf7d0;
+  --pos-page-bg: #ffffff;
+
+  /* --- Radius / soya (9-Qavatdan) --- */
+  --pos-radius: 8px;
+  --pos-radius-sm: 6px;
+  --pos-radius-lg: 12px;
+  --pos-radius-pill: 999px;
+  --pos-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --pos-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.1);
+  --pos-shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.18);
+  --pos-transition: 0.15s ease;
+
+  /* --- YANGI (13-Qavat): bo'shliq shkalasi ---
+     UI-kit komponentlari (Button/Input/Card/Modal) shu shkaladan
+     foydalanadi — modullar ham kelajakda shunga o'tishi tavsiya etiladi. */
+  --pos-space-1: 0.25rem;
+  --pos-space-2: 0.5rem;
+  --pos-space-3: 0.75rem;
+  --pos-space-4: 1rem;
+  --pos-space-5: 1.5rem;
+  --pos-space-6: 2rem;
+
+  /* --- YANGI (13-Qavat): tipografiya shkalasi --- */
+  --pos-font-xs: 0.75rem;
+  --pos-font-sm: 0.85rem;
+  --pos-font-md: 0.92rem;
+  --pos-font-lg: 1.1rem;
+  --pos-font-xl: 1.4rem;
+  --pos-font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* --- YANGI (13-Qavat): Badge/status tonlari ---
+     `info` va `warning` 9-Qavatda mavjud bo'lmagan, shu yerda qo'shildi;
+     `success`/`danger` yuqoridagi mavjud tokenlarga moslashtirilgan
+     (Badge komponenti shu tonlarni ishlatadi, boshqa joyda ham qayta
+     ishlatilishi mumkin — masalan kelajakda goal-status/task-priority
+     shu tonlarga o'tkazilsa). */
+  --pos-badge-neutral-bg: #eef0f2;
+  --pos-badge-neutral-text: #4b5563;
+  --pos-badge-info-bg: #dbeafe;
+  --pos-badge-info-text: #1d4ed8;
+  --pos-badge-success-bg: var(--pos-success-bg);
+  --pos-badge-success-text: var(--pos-success);
+  --pos-badge-warning-bg: #fef3c7;
+  --pos-badge-warning-text: #92400e;
+  --pos-badge-danger-bg: var(--pos-danger-bg);
+  --pos-badge-danger-text: var(--pos-danger);
+
+  /* --- YANGI (13-Qavat): Modal overlay --- */
+  --pos-overlay-bg: rgba(15, 18, 24, 0.45);
+}
+
+/* ============================================================
+   12-Qavat: Profile & Settings — tema (dark/light) qiymatlari.
+   O'zgarishsiz ko'chirilgan, faqat yangi (13-Qavat) badge/overlay
+   tonlari uchun dark-mos qiymatlar qo'shilgan.
+   ============================================================ */
+:root[data-theme="dark"] {
+  --pos-primary: #3b82f6;
+  --pos-primary-hover: #60a5fa;
+  --pos-primary-bg: #1e293b;
+  --pos-text: #e5e7eb;
+  --pos-muted: #9ca3af;
+  --pos-surface: #1c1f26;
+  --pos-surface-muted: #23262f;
+  --pos-border: #343841;
+  --pos-border-hover: #454b57;
+  --pos-danger: #f87171;
+  --pos-danger-bg: #3a1d1d;
+  --pos-danger-border: #7f1d1d;
+  --pos-success: #4ade80;
+  --pos-success-bg: #12321f;
+  --pos-success-border: #14532d;
+  --pos-page-bg: #12141a;
+  --pos-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --pos-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --pos-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  --pos-badge-neutral-bg: #2a2e37;
+  --pos-badge-neutral-text: #cbd1d9;
+  --pos-badge-info-bg: #1e2f4d;
+  --pos-badge-info-text: #93c5fd;
+  --pos-badge-warning-bg: #3a2c0f;
+  --pos-badge-warning-text: #fcd34d;
+
+  --pos-overlay-bg: rgba(0, 0, 0, 0.6);
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Textarea, Select, Button } from "../../../shared/ui";
 
 const PRIORITY_OPTIONS = [
   { value: "low", label: "Past" },
@@ -55,78 +56,62 @@ export function TaskForm({ onSubmit, goals, fixedGoalId }) {
 
   return (
     <form onSubmit={handleSubmit} className="auth-form task-form">
-      <label>
-        Sarlavha
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          maxLength={255}
-          placeholder="Masalan: Hisobotni yakunlash"
-        />
-      </label>
+      <Input
+        label="Sarlavha"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+        maxLength={255}
+        placeholder="Masalan: Hisobotni yakunlash"
+      />
 
-      <label>
-        Tavsif (ixtiyoriy)
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={2}
-        />
-      </label>
+      <Textarea
+        label="Tavsif (ixtiyoriy)"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={2}
+      />
 
       {!fixedGoalId && goals && (
-        <label>
-          Maqsad (ixtiyoriy)
-          <select value={goalId} onChange={(e) => setGoalId(e.target.value)}>
-            <option value="">Maqsadsiz (mustaqil vazifa)</option>
-            {goals.map((goal) => (
-              <option key={goal.id} value={goal.id}>
-                {goal.title}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label="Maqsad (ixtiyoriy)"
+          value={goalId}
+          onChange={(e) => setGoalId(e.target.value)}
+          options={[
+            { value: "", label: "Maqsadsiz (mustaqil vazifa)" },
+            ...goals.map((goal) => ({ value: goal.id, label: goal.title })),
+          ]}
+        />
       )}
 
       <div className="task-form-row">
-        <label>
-          Ustuvorlik
-          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-            {PRIORITY_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label="Ustuvorlik"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          options={PRIORITY_OPTIONS}
+        />
 
-        <label>
-          Takrorlanish
-          <select value={recurrence} onChange={(e) => setRecurrence(e.target.value)}>
-            {RECURRENCE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label="Takrorlanish"
+          value={recurrence}
+          onChange={(e) => setRecurrence(e.target.value)}
+          options={RECURRENCE_OPTIONS}
+        />
 
-        <label>
-          Muddat (ixtiyoriy)
-          <input
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-          />
-        </label>
+        <Input
+          label="Muddat (ixtiyoriy)"
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+        />
       </div>
 
       {error && <p className="auth-error">{error}</p>}
 
-      <button type="submit" disabled={isSubmitting}>
+      <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Saqlanmoqda..." : "Vazifani saqlash"}
-      </button>
+      </Button>
     </form>
   );
 }

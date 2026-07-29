@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
 import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
+import { Button, Select } from "../../shared/ui";
 import { createGoalsApi } from "./api";
 import { GoalForm } from "./components/GoalForm";
 import { GoalCard } from "./components/GoalCard";
@@ -96,15 +97,20 @@ export function GoalsPage() {
   return (
     <div className="goals-page">
       <div className="goals-toolbar">
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">Barchasi</option>
-          <option value="active">Faol</option>
-          <option value="completed">Bajarilgan</option>
-          <option value="archived">Arxivlangan</option>
-        </select>
-        <button type="button" onClick={() => setShowForm((v) => !v)}>
+        <Select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          aria-label="Holat bo'yicha filtr"
+          options={[
+            { value: "", label: "Barchasi" },
+            { value: "active", label: "Faol" },
+            { value: "completed", label: "Bajarilgan" },
+            { value: "archived", label: "Arxivlangan" },
+          ]}
+        />
+        <Button variant="primary" onClick={() => setShowForm((v) => !v)}>
           {showForm ? "Bekor qilish" : "+ Yangi maqsad"}
-        </button>
+        </Button>
       </div>
 
       {showForm && <GoalForm onSubmit={handleCreate} />}

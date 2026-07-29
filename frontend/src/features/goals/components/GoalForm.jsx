@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Textarea, Button } from "../../../shared/ui";
 
 export function GoalForm({ onSubmit }) {
   const [title, setTitle] = useState("");
@@ -29,40 +30,34 @@ export function GoalForm({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit} className="auth-form goal-form">
-      <label>
-        Sarlavha
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          maxLength={255}
-          placeholder="Masalan: Yiliga 12 ta kitob o'qish"
-        />
-      </label>
+      <Input
+        label="Sarlavha"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+        maxLength={255}
+        placeholder="Masalan: Yiliga 12 ta kitob o'qish"
+      />
 
-      <label>
-        Tavsif (ixtiyoriy)
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={3}
-        />
-      </label>
+      <Textarea
+        label="Tavsif (ixtiyoriy)"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={3}
+      />
 
-      <label>
-        Muddat (ixtiyoriy)
-        <input
-          type="date"
-          value={targetDate}
-          onChange={(e) => setTargetDate(e.target.value)}
-        />
-      </label>
+      <Input
+        label="Muddat (ixtiyoriy)"
+        type="date"
+        value={targetDate}
+        onChange={(e) => setTargetDate(e.target.value)}
+      />
 
       {error && <p className="auth-error">{error}</p>}
 
-      <button type="submit" disabled={isSubmitting}>
+      <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Saqlanmoqda..." : "Maqsadni saqlash"}
-      </button>
+      </Button>
     </form>
   );
 }

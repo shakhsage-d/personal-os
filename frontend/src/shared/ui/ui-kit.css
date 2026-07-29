@@ -1,0 +1,314 @@
+/* ============================================================
+   13-Qavat: Design System / UI-kit — umumiy komponentlar uslubi.
+
+   Qoida: bu faylda HECH BIR hardcoded rang/piksel-o'lcham ishlatilmaydi —
+   faqat `tokens.css`dagi `--pos-*` o'zgaruvchilar orqali. Shu sababli
+   dark/light tema avtomatik ishlaydi (App.css'dagi `:root[data-theme]`
+   qoidasi tufayli), alohida "dark" versiyasi bu yerda yozilmaydi.
+   ============================================================ */
+
+/* ---------- Button ---------- */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pos-space-2);
+  font-family: inherit;
+  font-size: var(--pos-font-md);
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  border-radius: var(--pos-radius-sm);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-surface);
+  color: var(--pos-text);
+  cursor: pointer;
+  transition: background-color var(--pos-transition), border-color var(--pos-transition),
+    transform 0.05s ease, opacity var(--pos-transition);
+  line-height: 1.2;
+}
+
+.ui-btn:hover {
+  background: var(--pos-surface-muted);
+  border-color: var(--pos-border-hover);
+}
+
+.ui-btn:active {
+  transform: translateY(1px);
+}
+
+.ui-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ui-btn:focus-visible {
+  outline: 2px solid var(--pos-primary);
+  outline-offset: 2px;
+}
+
+.ui-btn-primary {
+  background: var(--pos-primary);
+  border-color: var(--pos-primary);
+  color: #fff;
+}
+
+.ui-btn-primary:hover {
+  background: var(--pos-primary-hover);
+  border-color: var(--pos-primary-hover);
+}
+
+.ui-btn-secondary {
+  background: var(--pos-surface);
+  border-color: var(--pos-border);
+  color: var(--pos-text);
+}
+
+.ui-btn-danger {
+  background: var(--pos-danger-bg);
+  border-color: var(--pos-danger-border);
+  color: var(--pos-danger);
+}
+
+.ui-btn-danger:hover {
+  background: var(--pos-danger-border);
+}
+
+.ui-btn-ghost {
+  background: none;
+  border-color: transparent;
+  color: var(--pos-primary);
+  text-decoration: underline;
+  padding: 0.2rem 0.3rem;
+}
+
+.ui-btn-ghost:hover {
+  background: none;
+  border-color: transparent;
+  color: var(--pos-primary-hover);
+}
+
+.ui-btn-sm {
+  font-size: var(--pos-font-sm);
+  padding: 0.35rem 0.7rem;
+}
+
+.ui-btn-lg {
+  font-size: var(--pos-font-lg);
+  padding: 0.75rem 1.25rem;
+}
+
+.ui-btn-block {
+  width: 100%;
+}
+
+/* ---------- Input / Textarea / Select — umumiy "field" o'ramasi ---------- */
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pos-space-1);
+  font-size: var(--pos-font-sm);
+  width: 100%;
+}
+
+.ui-field-label {
+  font-weight: 500;
+  color: var(--pos-text);
+}
+
+.ui-field-hint {
+  color: var(--pos-muted);
+  font-size: var(--pos-font-xs);
+}
+
+.ui-field-error {
+  color: var(--pos-danger);
+  font-size: var(--pos-font-xs);
+}
+
+.ui-input,
+.ui-textarea,
+.ui-select {
+  font-family: inherit;
+  font-size: var(--pos-font-md);
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--pos-radius-sm);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-surface);
+  color: var(--pos-text);
+  width: 100%;
+  transition: border-color var(--pos-transition);
+}
+
+.ui-input:hover,
+.ui-textarea:hover,
+.ui-select:hover {
+  border-color: var(--pos-border-hover);
+}
+
+.ui-input:focus-visible,
+.ui-textarea:focus-visible,
+.ui-select:focus-visible {
+  outline: 2px solid var(--pos-primary);
+  outline-offset: 1px;
+}
+
+.ui-input-invalid,
+.ui-textarea-invalid,
+.ui-select-invalid {
+  border-color: var(--pos-danger-border);
+}
+
+.ui-textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+/* ---------- Card ---------- */
+.ui-card {
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius);
+  box-shadow: var(--pos-shadow-sm);
+  padding: var(--pos-space-4) var(--pos-space-5);
+}
+
+.ui-card-padded-lg {
+  padding: var(--pos-space-5) var(--pos-space-6);
+}
+
+.ui-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--pos-space-2);
+  margin-bottom: var(--pos-space-3);
+}
+
+.ui-card-title {
+  margin: 0;
+  font-size: var(--pos-font-lg);
+}
+
+.ui-card-footer {
+  margin-top: var(--pos-space-4);
+  display: flex;
+  gap: var(--pos-space-2);
+  align-items: center;
+}
+
+/* ---------- Badge ---------- */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--pos-font-xs);
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--pos-radius-pill);
+  white-space: nowrap;
+  font-weight: 500;
+  background: var(--pos-badge-neutral-bg);
+  color: var(--pos-badge-neutral-text);
+}
+
+.ui-badge-info {
+  background: var(--pos-badge-info-bg);
+  color: var(--pos-badge-info-text);
+}
+
+.ui-badge-success {
+  background: var(--pos-badge-success-bg);
+  color: var(--pos-badge-success-text);
+}
+
+.ui-badge-warning {
+  background: var(--pos-badge-warning-bg);
+  color: var(--pos-badge-warning-text);
+}
+
+.ui-badge-danger {
+  background: var(--pos-badge-danger-bg);
+  color: var(--pos-badge-danger-text);
+}
+
+/* ---------- Modal ---------- */
+.ui-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--pos-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pos-space-4);
+  z-index: 1000;
+}
+
+.ui-modal {
+  background: var(--pos-surface);
+  border-radius: var(--pos-radius-lg);
+  box-shadow: var(--pos-shadow-lg);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--pos-space-5);
+}
+
+.ui-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--pos-space-3);
+  margin-bottom: var(--pos-space-4);
+}
+
+.ui-modal-title {
+  margin: 0;
+  font-size: var(--pos-font-lg);
+}
+
+.ui-modal-close {
+  background: none;
+  border: none;
+  color: var(--pos-muted);
+  font-size: var(--pos-font-lg);
+  line-height: 1;
+  cursor: pointer;
+  padding: var(--pos-space-1);
+}
+
+.ui-modal-close:hover {
+  color: var(--pos-text);
+}
+
+/* ---------- Tooltip ---------- */
+.ui-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.ui-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--pos-text);
+  color: var(--pos-surface);
+  font-size: var(--pos-font-xs);
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--pos-radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--pos-transition);
+  z-index: 20;
+}
+
+.ui-tooltip-wrapper:hover .ui-tooltip,
+.ui-tooltip-wrapper:focus-within .ui-tooltip {
+  opacity: 1;
+}
+
+/* ---------- Responsiv (roadmap-qoshimcha-responsiv-dizayn.md, 8-band) ---------
+   Alohida yangi @media blok ochilmaydi — mavjud yagona
+   `@media (max-width: 640px)` bloki App.css oxirida bor va shu yerdagi
+   klasslar o'sha blokka qo'shiladi (pastga, App.css ichida qarang). */

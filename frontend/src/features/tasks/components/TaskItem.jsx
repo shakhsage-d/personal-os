@@ -1,3 +1,5 @@
+import { Badge, Select, Button } from "../../../shared/ui";
+
 const STATUS_LABELS = {
   todo: "Bajarilmagan",
   in_progress: "Jarayonda",
@@ -8,6 +10,12 @@ const PRIORITY_LABELS = {
   low: "Past",
   medium: "O'rtacha",
   high: "Yuqori",
+};
+
+const PRIORITY_TONES = {
+  low: "neutral",
+  medium: "warning",
+  high: "danger",
 };
 
 // `showGoalTag` — Tasks umumiy sahifasida har bir vazifa qaysi maqsadga
@@ -29,31 +37,22 @@ export function TaskItem({ task, onUpdateStatus, onDelete, showGoalTag = true })
           </span>
         </label>
         <div className="task-item-tags">
-          <span className={`task-priority task-priority-${task.priority}`}>
-            {PRIORITY_LABELS[task.priority]}
-          </span>
-          {showGoalTag && task.goal_title && (
-            <span className="task-goal-tag">{task.goal_title}</span>
-          )}
-          {task.due_date && <span className="task-due-date">{task.due_date}</span>}
+          <Badge tone={PRIORITY_TONES[task.priority]}>{PRIORITY_LABELS[task.priority]}</Badge>
+          {showGoalTag && task.goal_title && <Badge tone="info">{task.goal_title}</Badge>}
+          {task.due_date && <Badge tone="neutral">{task.due_date}</Badge>}
         </div>
       </div>
 
       <div className="task-item-actions">
-        <select
+        <Select
           value={task.status}
           onChange={(e) => onUpdateStatus(e.target.value)}
           aria-label="Vazifa holati"
-        >
-          {Object.entries(STATUS_LABELS).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-        <button type="button" className="link-button" onClick={onDelete}>
+          options={Object.entries(STATUS_LABELS).map(([value, label]) => ({ value, label }))}
+        />
+        <Button variant="ghost" onClick={onDelete}>
           o'chirish
-        </button>
+        </Button>
       </div>
     </li>
   );

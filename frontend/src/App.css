@@ -1,3 +1,14 @@
+/* ============================================================
+   13-Qavat: Dizayn tokenlari endi markazlashtirilgan.
+   Avval shu faylda (9-Qavat) va pastroqda (12-Qavat, dark-tema) alohida
+   yozilgan `--pos-*` o'zgaruvchilar endi `shared/ui/tokens.css` fayliga
+   ko'chirildi (qiymatlar o'zgarishsiz) — Design System / UI-kit shu bitta
+   joydan foydalanadi. `@import` CSS qoidasiga ko'ra faylning eng boshida
+   turishi shart (boshqa har qanday qoidadan oldin), shuning uchun bu yerda.
+   ============================================================ */
+@import "./shared/ui/tokens.css";
+@import "./shared/ui/ui-kit.css";
+
 /* --- Responsiv asos: barcha elementlar shu qoidaga bo'ysunadi,
    kelajakdagi modullar ham shu andozadan foydalanadi. --- */
 *,
@@ -8,57 +19,6 @@
 
 body {
   margin: 0;
-}
-
-/* ============================================================
-   9-Qavat: Dizayn andozalari (design tokens)
-   Butun ilova shu o'zgaruvchilardan foydalanadi — rang/radius/soyani
-   bir joydan o'zgartirish uchun.
-   ============================================================ */
-:root {
-  --pos-primary: #2563eb;
-  --pos-primary-hover: #1d4ed8;
-  --pos-primary-bg: #eff6ff;
-  --pos-text: #1f2430;
-  --pos-muted: #6b7280;
-  --pos-surface: #ffffff;
-  --pos-surface-muted: #f8f9fa;
-  --pos-border: #e2e2e2;
-  --pos-danger: #b91c1c;
-  --pos-danger-bg: #fef2f2;
-  --pos-danger-border: #fecaca;
-  --pos-success: #15803d;
-  --pos-page-bg: #ffffff;
-  --pos-radius: 8px;
-  --pos-radius-sm: 6px;
-  --pos-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-  --pos-transition: 0.15s ease;
-}
-
-/* ============================================================
-   12-Qavat: Profile & Settings — tema (dark/light).
-   `ThemeContext.jsx` `<html>` elementiga `data-theme="dark"` yoki
-   `data-theme="light"` atributini qo'yadi (foydalanuvchi tanloviga yoki
-   OS afzalligiga qarab hisoblangan holda) — shu atribut orqali quyidagi
-   o'zgaruvchilar almashtiriladi. Butun ilova shu bir xil `--pos-*`
-   o'zgaruvchilardan foydalangani uchun (yuqoridagi izohga qarang),
-   alohida "dark" versiyasini har bir komponentda qayta yozish shart emas.
-   ============================================================ */
-:root[data-theme="dark"] {
-  --pos-primary: #3b82f6;
-  --pos-primary-hover: #60a5fa;
-  --pos-primary-bg: #1e293b;
-  --pos-text: #e5e7eb;
-  --pos-muted: #9ca3af;
-  --pos-surface: #1c1f26;
-  --pos-surface-muted: #23262f;
-  --pos-border: #343841;
-  --pos-danger: #f87171;
-  --pos-danger-bg: #3a1d1d;
-  --pos-danger-border: #7f1d1d;
-  --pos-success: #4ade80;
-  --pos-page-bg: #12141a;
-  --pos-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 body {
@@ -1743,6 +1703,21 @@ textarea:focus-visible,
   .theme-option-group {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  /* 13-Qavat: UI-kit komponentlari mobil qoidalari */
+  .ui-modal {
+    padding: var(--pos-space-4);
+    max-height: 100vh;
+    border-radius: var(--pos-radius);
+  }
+
+  .ui-card {
+    padding: var(--pos-space-3) var(--pos-space-4);
+  }
+
+  .ui-btn {
+    min-height: 2.75rem;
   }
 }
 

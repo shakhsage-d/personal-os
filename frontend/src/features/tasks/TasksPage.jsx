@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
 import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
+import { Button, Select } from "../../shared/ui";
 import { createGoalsApi } from "../goals/api";
 import { createTasksApi } from "./api";
 import { TaskForm } from "./components/TaskForm";
@@ -85,29 +86,40 @@ export function TasksPage() {
   return (
     <div className="tasks-page">
       <div className="tasks-toolbar">
-        <select value={goalFilter} onChange={(e) => setGoalFilter(e.target.value)}>
-          <option value="">Barcha maqsadlar</option>
-          {goals.map((goal) => (
-            <option key={goal.id} value={goal.id}>
-              {goal.title}
-            </option>
-          ))}
-        </select>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">Barcha holatlar</option>
-          <option value="todo">Bajarilmagan</option>
-          <option value="in_progress">Jarayonda</option>
-          <option value="done">Bajarilgan</option>
-        </select>
-        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
-          <option value="">Barcha ustuvorliklar</option>
-          <option value="low">Past</option>
-          <option value="medium">O'rtacha</option>
-          <option value="high">Yuqori</option>
-        </select>
-        <button type="button" onClick={() => setShowForm((v) => !v)}>
+        <Select
+          value={goalFilter}
+          onChange={(e) => setGoalFilter(e.target.value)}
+          aria-label="Maqsad bo'yicha filtr"
+          options={[
+            { value: "", label: "Barcha maqsadlar" },
+            ...goals.map((goal) => ({ value: goal.id, label: goal.title })),
+          ]}
+        />
+        <Select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          aria-label="Holat bo'yicha filtr"
+          options={[
+            { value: "", label: "Barcha holatlar" },
+            { value: "todo", label: "Bajarilmagan" },
+            { value: "in_progress", label: "Jarayonda" },
+            { value: "done", label: "Bajarilgan" },
+          ]}
+        />
+        <Select
+          value={priorityFilter}
+          onChange={(e) => setPriorityFilter(e.target.value)}
+          aria-label="Ustuvorlik bo'yicha filtr"
+          options={[
+            { value: "", label: "Barcha ustuvorliklar" },
+            { value: "low", label: "Past" },
+            { value: "medium", label: "O'rtacha" },
+            { value: "high", label: "Yuqori" },
+          ]}
+        />
+        <Button variant="primary" onClick={() => setShowForm((v) => !v)}>
           {showForm ? "Bekor qilish" : "+ Yangi vazifa"}
-        </button>
+        </Button>
       </div>
 
       {showForm && <TaskForm onSubmit={handleCreate} goals={goals} />}
