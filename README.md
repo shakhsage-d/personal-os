@@ -1,132 +1,74 @@
-# Personal OS
+# 14-Qavat: Dashboard v2 — qo'llash yo'riqnomasi
 
-Shaxsiy boshqaruv tizimi — Goals, Tasks, Calendar, Finance, Habits, Notifications, Dashboard.
+Bu papkadagi fayllarni repo'dagi bir xil yo'lga (nisbiy path bir xil)
+ko'chiring va quyidagi tartibda bajaring.
 
-Loyiha **piramida-roadmap** asosida, qavat-qavat quriladi. To'liq reja uchun `personal-os-roadmap.md`
-fayliga qarang. Hozirgi holat: **0–10-Qavatlar (v1.0.0) tugallangan** ✅ (Skeleton, Auth, Goals, Tasks,
-Calendar, Finance, Habits, Notifications, Dashboard, UX polish, Production Deploy).
+## Yangi fayllar
+- `backend/app/modules/dashboard/models.py`
+- `backend/app/modules/dashboard/catalog.py`
+- `backend/alembic/versions/0011_dashboard_widget_config.py`
+- `frontend/src/features/dashboard/widgetRegistry.js`
+- `frontend/src/features/dashboard/components/DashboardSettingsModal.jsx`
 
-v1.0.0'dan keyin ikki mustaqil yo'nalish parallel davom etmoqda (`roadmap-qoshimcha-git-workflow.md`,
-7-bo'lim: "4, 5, 6-qavatlar mustaqil-parallel" naqshiga o'xshab, bu ikkalasi ham bir-biriga bog'liq emas):
+## O'zgartirilgan fayllar (mavjudlarini almashtiring)
+- `backend/app/modules/dashboard/schemas.py`
+- `backend/app/modules/dashboard/service.py`
+- `backend/app/modules/dashboard/router.py`
+- `frontend/src/features/dashboard/api.js`
+- `frontend/src/features/dashboard/DashboardPage.jsx`
+- `frontend/src/features/dashboard/components/GoalsWidget.jsx`
+- `frontend/src/features/dashboard/components/TasksWidget.jsx`
+- `frontend/src/features/dashboard/components/CalendarWidget.jsx`
+- `frontend/src/features/dashboard/components/FinanceWidget.jsx`
+- `frontend/src/features/dashboard/components/HabitsWidget.jsx`
+- `frontend/src/features/dashboard/components/NotificationsWidget.jsx`
+- `frontend/src/App.css` (faqat qo'shilgan bloklar bor — mavjud fayl bilan
+  solishtirib, "14-Qavat: Dashboard v2" izohli bloklarni qo'shing, boshqa
+  narsani o'zgartirmang)
 
-- **11-Qavat — Mobil ilova (React Native/Expo)** — ishlanmoqda (`mobile/` papkasiga qarang).
-- **12-Qavat — Profile & Settings (v1.1 Web Enhancement)** ✅ tugallangan (`personal-os-roadmap-
-  v1.1-web-enhancement.md`ga qarang) — profil tahrirlash, parol o'zgartirish, hisobni o'chirish
-  (soft-delete), dark/light tema, bildirishnoma kanallari sozlamalari (`app/modules/profile/`,
-  `frontend/src/features/profile/`).
+## Qo'llash tartibi
 
-## Tuzilma
+1. Fayllarni ko'chiring (yuqoridagi ro'yxat).
+2. Backend: yangi migratsiyani ishga tushiring:
+   ```
+   cd backend
+   alembic upgrade head
+   ```
+3. Frontend: qo'shimcha kutubxona kerak emas, `npm run build`/`npm run dev`
+   bilan sinab ko'ring.
+4. Sinov qilingan narsalar (mening tomonimdan):
+   - Backend: barcha fayllar `py_compile`dan o'tgan, haqiqiy loyihaviy
+     `requirements.txt` o'rnatilib, `app.main:app` xatosiz yuklangan,
+     `GET /dashboard/summary`, `GET /dashboard/config`,
+     `PUT /dashboard/config` OpenAPI sxemasida to'g'ri ko'ringan.
+   - Katalog mantiqi (`catalog.py`): har bir modulda aniq 2 tadan widget
+     varianti borligi, `merge_with_catalog()` eskirgan kalitlarni olib
+     tashlashi va yangi katalog itemlarini qo'shishi units-test bilan
+     tekshirilgan.
+   - Frontend: `npm run build` muvaffaqiyatli, `oxlint` 0 xato/ogohlantirish
+     bilan o'tgan.
+   - **Sinovdan o'tmagan**: haqiqiy Postgres bazasiga qarshi (RLS siyosati
+     ishlashi, real foydalanuvchi bilan config saqlash/o'qish) — buni real
+     dev muhitingizda tekshirish tavsiya etiladi.
+5. Roadmap fayli (`personal-os-roadmap-v1.1-web-enhancement.md`) sizning
+   Claude loyihangizda saqlangani uchun men uni to'g'ridan-to'g'ri
+   tahrirlay olmadim — 14-Qavat oldidagi `[ ]`ni o'zingiz `[x]`ga
+   o'zgartiring (bandning o'zi: "14-QAVAT — Dashboard v2 (widget tizimi,
+   shaxsiylashtirish)").
+6. Commit + push (masalan):
+   ```
+   git add -A
+   git commit -m "14-Qavat: Dashboard v2 - widget tizimi va shaxsiylashtirish"
+   git push
+   ```
 
-```
-personal-os/
-  backend/           # FastAPI (Python 3.14)
-    app/
-      core/           # umumiy: config, database, auth (kelajakda)
-      modules/        # har bir modul (goals, tasks, ...) shu yerda
-      main.py
-    alembic/          # DB migratsiyalar
-    requirements.txt
-    .env.example
-  frontend/           # React (Vite)
-    src/
-      features/       # har bir modul uchun alohida papka
-      shared/         # umumiy komponent/api/hook
-  mobile/             # React Native (Expo) — 11-Qavat, batafsili mobile/README.md'da
-    src/
-      features/
-      shared/
-  docker-compose.yml  # ixtiyoriy — lokal Postgres
-```
+## Qisqacha nima qo'shildi
 
-## O'rnatish (Windows + PowerShell)
-
-### 1. Backend
-
-```powershell
-cd backend
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-# Agar execution policy xatosi chiqsa:
-# Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-
-pip install -r requirements.txt
-copy .env.example .env
-# .env ichida DATABASE_URL'ni Supabase yoki lokal Postgres'ga moslang
-
-alembic upgrade head
-uvicorn app.main:app --reload
-```
-
-Tekshirish: http://127.0.0.1:8000/health → `{"status":"ok",...}`
-Swagger: http://127.0.0.1:8000/docs
-
-### 2. (Ixtiyoriy) Lokal Postgres docker orqali
-
-```powershell
-docker compose up -d
-```
-
-### 3. Frontend
-
-```powershell
-cd frontend
-npm install
-copy .env.example .env
-npm run dev
-```
-
-Tekshirish: http://localhost:5173 — "Backend ulanishi ishlayapti" xabari ko'rinishi kerak
-(buning uchun backend ham parallel ishlab turishi kerak).
-
-## Production Deploy (10-Qavat)
-
-Loyiha `render.yaml` orqali (Render Blueprint) deploy qilinadi — bitta faylda backend (FastAPI) va
-frontend (statik React build) ta'riflangan.
-
-### 1. Supabase (production DB)
-
-1. [supabase.com](https://supabase.com)'da yangi loyiha yarating.
-2. Superuser **emas**, cheklangan huquqli rol yarating (`backend/.env.example`dagi SQL buyruqqa
-   qarang) — bu RLS'ning haqiqatan ishlashi uchun **shart**.
-3. `DATABASE_URL`ni shu rol bilan yozib oling: `postgresql+asyncpg://personal_os_app:<parol>@<host>:5432/<db>`.
-
-### 2. Render (Blueprint orqali)
-
-1. Render Dashboard → **New → Blueprint** → shu GitHub repo'ni tanlang.
-2. Render `render.yaml`ni o'qib ikkita xizmatni (`personal-os-backend`, `personal-os-frontend`)
-   avtomatik taklif qiladi.
-3. `sync: false` bilan belgilangan environment variable'larni qo'lda kiriting:
-   - Backend: `DATABASE_URL` (1-qadamdan), `CORS_ORIGINS` (frontend URL'i tayyor bo'lgach)
-   - Frontend: `VITE_API_BASE_URL` (backend URL'i tayyor bo'lgach)
-4. Ikkala xizmat birinchi marta deploy bo'lgach, haqiqiy URL'larni bir-biriga kiritib (3-qadam),
-   qayta deploy qiling (Render env var o'zgarganda avtomatik qayta deploy qiladi).
-5. `alembic upgrade head` har deploy'da avtomatik ishga tushadi (`render.yaml`dagi `startCommand`).
-
-**Eslatma:** backend `--workers 1` bilan ishga tushadi — bu ataylab shunday, chunki
-`app/core/scheduler.py`dagi APScheduler in-process ishlaydi; bir nechta worker bo'lsa, bildirishnoma
-trigger'lari bir necha marta ishga tushib qoladi.
-
-### 3. Cron-ping (Render uyqusi + Supabase pauzasi uchun)
-
-`.github/workflows/keep-alive.yml` — har 6 soatda backend'ning `/health/db` endpointiga (haqiqiy DB
-so'rovi bilan) so'rov yuboradi, shu bilan bir vaqtda Render'ni uyg'otadi va Supabase'ning 7-kunlik
-pauza hisoblagichini nolga tushiradi. Sozlash uchun workflow faylidagi `PING_URL`ni (yoki repo
-**Settings → Secrets and variables → Actions → Variables**da `KEEP_ALIVE_URL`ni) haqiqiy Render
-backend URL'iga o'zgartiring.
-
-### 4. Tekshirish (DoD)
-
-- [ ] Production URL orqali login'dan Dashboard'gacha ishlaydi
-- [ ] Ikki foydalanuvchi bilan RLS production bazasida qayta tekshirilgan (biri ikkinchisining
-      ma'lumotini ko'rmaydi)
-- [ ] `keep-alive.yml` workflow "Actions" bo'limida muvaffaqiyatli ishlab turibdi
-
-10-Qavat tugagach, tizim rasman **v1.0.0** deb belgilanadi (roadmap, 10-Qavat).
-
-## Keyingi qadam
-
-10-Qavat tugagach, roadmap ikki mustaqil izga bo'linadi:
-
-- Mobil ilova izi: **11-Qavat (React Native)**, alohida mustaqil roadmap sifatida davom etmoqda.
-- Web izi (`personal-os-roadmap-v1.1-web-enhancement.md`): 12-Qavat (Profile & Settings) tugallandi,
-  navbatdagi qadam — **13-Qavat: Design System / UI-kit**.
+- Backend: `UserDashboardConfig` jadvali (1:1, JSONB `widgets` ustuni,
+  `UserSettings` bilan bir xil naqsh), widget katalogi (har bir modulda
+  2 tadan variant), `GET/PUT /dashboard/config` endpointlari.
+- Frontend: 6 ta yangi widget-variant komponenti, `widgetRegistry.js`
+  orqali widget_key -> komponent bog'lanishi, `DashboardSettingsModal`
+  (UI-kit `Modal`/`Button`/`Input` orqali) — checkbox (yoqish/o'chirish) +
+  tartib-raqam input (`position`), drag-and-drop emas (roadmap
+  "murakkablik oshirilmasin" tamoyiliga muvofiq).
