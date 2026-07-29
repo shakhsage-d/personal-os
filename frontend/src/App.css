@@ -1426,6 +1426,141 @@ textarea:focus-visible,
 }
 
 /* ============================================================
+   14-Qavat: Dashboard v2 — widget variantlari va sozlash oynasi
+   ============================================================ */
+.dashboard-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dash-progress-list,
+.dash-breakdown-list,
+.dash-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dash-progress-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+
+.dash-progress-track {
+  height: 8px;
+  border-radius: var(--pos-radius-pill, 999px);
+  background: var(--pos-surface-muted, #f0f0f0);
+  overflow: hidden;
+  flex: 1;
+}
+
+.dash-progress-fill {
+  height: 100%;
+  background: var(--pos-primary, #2563eb);
+  border-radius: inherit;
+  transition: width var(--pos-transition, 0.15s ease);
+}
+
+.dash-progress-fill-warning {
+  background: #d97706;
+}
+
+.dash-progress-fill-danger {
+  background: var(--pos-danger, #b91c1c);
+}
+
+.dash-breakdown-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2rem;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.dash-agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dash-agenda-date {
+  display: block;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--pos-muted, #666);
+  margin-bottom: 0.25rem;
+}
+
+.dash-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.dash-settings-hint {
+  margin-top: 0;
+}
+
+.dash-settings-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.dash-settings-group-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.dash-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--pos-border, #f0f0f0);
+}
+
+.dash-settings-row:first-of-type {
+  border-top: none;
+}
+
+.dash-settings-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.dash-settings-checkbox input {
+  margin-top: 0.2rem;
+}
+
+.dash-settings-description {
+  color: var(--pos-muted, #6b7280);
+  font-size: 0.8rem;
+}
+
+.dash-settings-row .ui-field {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.dash-settings-position-input {
+  width: 4.5rem;
+}
+
+/* ============================================================
    MOBIL BRAUZER UCHUN ASOSIY QOIDA (barcha modullar shunga amal
    qiladi — roadmap qoshimchasi: "responsiv-dizayn-standarti.md")
    ============================================================ */
@@ -1683,6 +1818,25 @@ textarea:focus-visible,
     flex-direction: column;
     align-items: flex-start;
     gap: 0.15rem;
+  }
+
+  .dashboard-toolbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .dash-breakdown-row {
+    grid-template-columns: 3.5rem 1fr 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  .dash-settings-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dash-settings-position-input {
+    width: 100%;
   }
 
   .profile-tabs {

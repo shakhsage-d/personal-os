@@ -20,3 +20,30 @@ export function NotificationsWidget({ summary }) {
     </div>
   );
 }
+
+// 14-Qavat: Dashboard v2 — ikkinchi variant (widget_key: "notifications_recent").
+export function NotificationsRecentWidget({ summary }) {
+  return (
+    <div className="dash-card">
+      <div className="dash-card-header">
+        <h3>Bildirishnomalar — so'nggilari</h3>
+        <span className="muted dash-header-hint">Header'dagi 🔔 orqali</span>
+      </div>
+      {summary.recent.length === 0 ? (
+        <p className="muted">Hali bildirishnoma yo'q.</p>
+      ) : (
+        <ul className="dash-mini-list">
+          {summary.recent.map((n) => (
+            <li key={n.id} className="dash-mini-item">
+              <span className="dash-mini-title">
+                {n.is_read ? "" : "🔵 "}
+                {n.title}
+              </span>
+              <span className="dash-mini-meta">{n.created_at.slice(0, 10)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

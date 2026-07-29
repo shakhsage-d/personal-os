@@ -42,12 +42,20 @@ class TaskSummaryItem(BaseModel):
     goal_title: str | None
 
 
+class TaskPriorityCounts(BaseModel):
+    low: int
+    medium: int
+    high: int
+
+
 class TasksSummary(BaseModel):
     open_count: int
     overdue_count: int
     due_today_count: int
     # Muddati eng yaqin, hali bajarilmagan 5 ta vazifa (kechikkanlar ustunda).
     upcoming: list[TaskSummaryItem]
+    # 14-Qavat: "tasks_priority_breakdown" widget varianti uchun.
+    priority_counts: TaskPriorityCounts
 
 
 class CalendarSummaryItem(BaseModel):
@@ -62,12 +70,24 @@ class CalendarSummary(BaseModel):
     upcoming_events: list[CalendarSummaryItem]
 
 
+class RecentTransactionItem(BaseModel):
+    id: uuid.UUID
+    type: str
+    amount: Decimal
+    description: str | None
+    occurred_on: date
+    category_name: str | None
+
+
 class FinanceSummary(BaseModel):
     year: int
     month: int
     total_income: Decimal
     total_expense: Decimal
     net: Decimal
+    # 14-Qavat: "finance_recent_transactions" widget varianti uchun, eng
+    # so'nggi 5 ta tranzaksiya (joriy oy bilan cheklanmagan).
+    recent_transactions: list[RecentTransactionItem]
 
 
 class HabitSummaryItem(BaseModel):
@@ -83,8 +103,18 @@ class HabitsSummary(BaseModel):
     top_streaks: list[HabitSummaryItem]
 
 
+class RecentNotificationItem(BaseModel):
+    id: uuid.UUID
+    type: str
+    title: str
+    is_read: bool
+    created_at: datetime
+
+
 class NotificationsSummary(BaseModel):
     unread_count: int
+    # 14-Qavat: "notifications_recent" widget varianti uchun.
+    recent: list[RecentNotificationItem]
 
 
 class DashboardSummaryOut(BaseModel):
@@ -95,3 +125,34 @@ class DashboardSummaryOut(BaseModel):
     finance: FinanceSummary
     habits: HabitsSummary
     notifications: NotificationsSummary
+
+
+# --- 14-Qavat: Dashboard v2 — widget konfiguratsiyasi sxemalari ---
+
+
+class WidgetConfigItem(BaseModel):
+    widget_key: str
+    enabled: bool
+    position: int
+    # Katalogdan (`catalog.py`) qo'shiladigan, faqat o'qish uchun metama'lumot
+    # — frontend alohida "katalog" so'rovi yubormasdan widget haqida to'liq
+    # ma'lumotga ega bo'lishi uchun (module/label/description DB'da
+    # saqlanmaydi, har doim koddan olinadi).
+    module: str
+    label: str
+    description: str
+
+
+class DashboardConfigOut(BaseModel):
+    widgets: list[WidgetConfigItem]
+    updated_at: datetime
+
+
+class WidgetConfigUpdateItem(BaseModel):
+    widget_key: str
+    enabled: bool
+    position: int
+
+
+class DashboardConfigUpdate(BaseModel):
+    widgets: list[WidgetConfigUpdateItem]

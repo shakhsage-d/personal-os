@@ -26,3 +26,40 @@ export function FinanceWidget({ summary, onNavigate }) {
     </div>
   );
 }
+
+// 14-Qavat: Dashboard v2 — ikkinchi variant (widget_key: "finance_recent_transactions").
+export function FinanceRecentTransactionsWidget({ summary, onNavigate }) {
+  const transactions = summary.recent_transactions;
+
+  return (
+    <div className="dash-card">
+      <div className="dash-card-header">
+        <h3>Moliya — so'nggi tranzaksiyalar</h3>
+        <button type="button" className="link-button" onClick={onNavigate}>
+          Barchasi →
+        </button>
+      </div>
+      {transactions.length === 0 ? (
+        <p className="muted">Hali tranzaksiya yo'q.</p>
+      ) : (
+        <ul className="dash-mini-list">
+          {transactions.map((tx) => (
+            <li key={tx.id} className="dash-mini-item">
+              <span className="dash-mini-title">
+                {tx.description || tx.category_name || "Nomsiz"}
+              </span>
+              <span
+                className={`dash-mini-meta ${
+                  tx.type === "expense" ? "dash-stat-warning" : "dash-stat-positive"
+                }`}
+              >
+                {tx.type === "expense" ? "-" : "+"}
+                {Number(tx.amount).toLocaleString("uz-UZ")} · {tx.occurred_on}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

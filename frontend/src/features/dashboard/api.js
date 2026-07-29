@@ -5,5 +5,9 @@
 export function createDashboardApi(authFetch) {
   return {
     getSummary: () => authFetch("/dashboard/summary"),
+    // 14-Qavat: Dashboard v2 — widget konfiguratsiyasi.
+    getConfig: () => authFetch("/dashboard/config"),
+    updateConfig: (widgets) =>
+      authFetch("/dashboard/config", { method: "PUT", body: { widgets } }),
   };
 }

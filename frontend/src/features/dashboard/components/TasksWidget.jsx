@@ -39,3 +39,56 @@ export function TasksWidget({ summary, onNavigate }) {
     </div>
   );
 }
+
+// 14-Qavat: Dashboard v2 — ikkinchi variant (widget_key: "tasks_priority_breakdown").
+export function TasksPriorityWidget({ summary, onNavigate }) {
+  const counts = summary.priority_counts;
+  const total = counts.low + counts.medium + counts.high;
+
+  return (
+    <div className="dash-card">
+      <div className="dash-card-header">
+        <h3>Vazifalar — ustuvorlik bo'yicha</h3>
+        <button type="button" className="link-button" onClick={onNavigate}>
+          Barchasi →
+        </button>
+      </div>
+      {total === 0 ? (
+        <p className="muted">Ochiq vazifa yo'q.</p>
+      ) : (
+        <ul className="dash-breakdown-list">
+          <li className="dash-breakdown-row">
+            <span>Yuqori</span>
+            <div className="dash-progress-track">
+              <div
+                className="dash-progress-fill dash-progress-fill-danger"
+                style={{ width: total ? `${(counts.high / total) * 100}%` : "0%" }}
+              />
+            </div>
+            <strong>{counts.high}</strong>
+          </li>
+          <li className="dash-breakdown-row">
+            <span>O'rta</span>
+            <div className="dash-progress-track">
+              <div
+                className="dash-progress-fill dash-progress-fill-warning"
+                style={{ width: total ? `${(counts.medium / total) * 100}%` : "0%" }}
+              />
+            </div>
+            <strong>{counts.medium}</strong>
+          </li>
+          <li className="dash-breakdown-row">
+            <span>Past</span>
+            <div className="dash-progress-track">
+              <div
+                className="dash-progress-fill"
+                style={{ width: total ? `${(counts.low / total) * 100}%` : "0%" }}
+              />
+            </div>
+            <strong>{counts.low}</strong>
+          </li>
+        </ul>
+      )}
+    </div>
+  );
+}
