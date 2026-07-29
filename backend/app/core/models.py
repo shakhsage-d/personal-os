@@ -40,6 +40,21 @@ class User(Base):
     # kifoya deb hisoblangan (MVP) — kelajakda bir nechta qurilma kerak
     # bo'lsa, alohida `device_tokens` jadvaliga ko'chiriladi.
     push_token: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    # 12-Qavat (Profile & Settings): profil maydonlari. `locale`/`timezone`
+    # uchun standart qiymatlar berilgan — mavjud foydalanuvchilar migratsiyadan
+    # keyin ham to'ldirilgan holatda qoladi (server_default orqali).
+    avatar_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    locale: Mapped[str] = mapped_column(String(10), default="uz", nullable=False)
+    timezone: Mapped[str] = mapped_column(
+        String(64), default="Asia/Tashkent", nullable=False
+    )
+    # 12-Qavat: hisobni o'chirish — soft-delete (asosiy fayl, 5-bo'lim: xavfsizlik
+    # bo'yicha ma'lumotlar darhol yo'qolmasligi, kerak bo'lsa tiklash imkoni
+    # qolishi kerak). `is_active=False` login/auth'ni bloklaydi, `deleted_at`
+    # esa "qachon o'chirilgan"ni belgilaydi (frontend/admin uchun signal).
+    deleted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=_utcnow, nullable=False
     )

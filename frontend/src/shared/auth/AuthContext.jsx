@@ -70,6 +70,13 @@ export function AuthProvider({ children }) {
     clearSession();
   }, [clearSession]);
 
+  // 12-Qavat: profil sahifasida `PATCH /auth/me` muvaffaqiyatli bo'lgach,
+  // backend qaytargan yangilangan foydalanuvchi bilan holatni yangilaydi —
+  // sahifani qayta yuklamasdan header/profil darhol yangi ma'lumotni ko'rsatadi.
+  const updateUser = useCallback((nextUser) => {
+    setUser(nextUser);
+  }, []);
+
   const callApi = useCallback((path, options, accessToken) => {
     const authHeaders = { ...options.headers, Authorization: `Bearer ${accessToken}` };
     const method = (options.method || "GET").toLowerCase();
@@ -124,8 +131,9 @@ export function AuthProvider({ children }) {
       login,
       logout,
       authFetch,
+      updateUser,
     }),
-    [user, tokens, isLoading, error, register, login, logout, authFetch]
+    [user, tokens, isLoading, error, register, login, logout, authFetch, updateUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

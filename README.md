@@ -3,9 +3,17 @@
 Shaxsiy boshqaruv tizimi — Goals, Tasks, Calendar, Finance, Habits, Notifications, Dashboard.
 
 Loyiha **piramida-roadmap** asosida, qavat-qavat quriladi. To'liq reja uchun `personal-os-roadmap.md`
-fayliga qarang. Hozirgi holat: **0–10-Qavatlar tugallangan** ✅ (Skeleton, Auth, Goals, Tasks, Calendar,
-Finance, Habits, Notifications, Dashboard, UX polish, Production Deploy) — hozir **11-Qavat: Mobil
-ilova (React Native/Expo)** ustida ishlanmoqda (`mobile/` papkasiga qarang).
+fayliga qarang. Hozirgi holat: **0–10-Qavatlar (v1.0.0) tugallangan** ✅ (Skeleton, Auth, Goals, Tasks,
+Calendar, Finance, Habits, Notifications, Dashboard, UX polish, Production Deploy).
+
+v1.0.0'dan keyin ikki mustaqil yo'nalish parallel davom etmoqda (`roadmap-qoshimcha-git-workflow.md`,
+7-bo'lim: "4, 5, 6-qavatlar mustaqil-parallel" naqshiga o'xshab, bu ikkalasi ham bir-biriga bog'liq emas):
+
+- **11-Qavat — Mobil ilova (React Native/Expo)** — ishlanmoqda (`mobile/` papkasiga qarang).
+- **12-Qavat — Profile & Settings (v1.1 Web Enhancement)** ✅ tugallangan (`personal-os-roadmap-
+  v1.1-web-enhancement.md`ga qarang) — profil tahrirlash, parol o'zgartirish, hisobni o'chirish
+  (soft-delete), dark/light tema, bildirishnoma kanallari sozlamalari (`app/modules/profile/`,
+  `frontend/src/features/profile/`).
 
 ## Tuzilma
 
@@ -117,5 +125,8 @@ backend URL'iga o'zgartiring.
 
 ## Keyingi qadam
 
-10-Qavat tugagach, roadmap bo'yicha keyingi (va oxirgi) bosqich: **11-Qavat — Mobil ilova (React
-Native)**, alohida mustaqil roadmap sifatida davom ettiriladi.
+10-Qavat tugagach, roadmap ikki mustaqil izga bo'linadi:
+
+- Mobil ilova izi: **11-Qavat (React Native)**, alohida mustaqil roadmap sifatida davom etmoqda.
+- Web izi (`personal-os-roadmap-v1.1-web-enhancement.md`): 12-Qavat (Profile & Settings) tugallandi,
+  navbatdagi qadam — **13-Qavat: Design System / UI-kit**.

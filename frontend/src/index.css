@@ -31,7 +31,13 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  /* 12-Qavat: bu blok endi faqat "JS hali ishga tushmagan" holatdagi
+     zaxira (fallback) — `ThemeContext.jsx` yuklangach `<html>`ga
+     `data-theme="light"`/`"dark"` atributini qo'yadi, va aniq tanlov
+     har doim ustun keladi (pastdagi `[data-theme]` bloklariga qarang).
+     Aks holda, foydalanuvchi aniq "Yorug'" tanlagan taqdirda ham, OS
+     "qorong'u" rejimida bo'lsa, bu media-so'rov uni bekor qilib qo'yardi. */
+  :root:not([data-theme]) {
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
@@ -45,9 +51,29 @@
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
 
-  #social .button-icon {
+  :root:not([data-theme]) #social .button-icon {
     filter: invert(1) brightness(2);
   }
+}
+
+/* 12-Qavat: aniq tanlov (yoki OS afzalligidan hisoblangan qiymat) —
+   `App.css`dagi `--pos-*` o'zgaruvchilari bilan bir xil naqsh. */
+:root[data-theme="dark"] {
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+}
+
+:root[data-theme="dark"] #social .button-icon {
+  filter: invert(1) brightness(2);
 }
 
 body {

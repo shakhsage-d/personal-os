@@ -22,10 +22,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.models import User
 from app.core.push import send_expo_push_notification
 from app.modules.notifications.models import Notification, NotificationType
+from app.modules.profile.service import get_settings_by_user_id
 
 _notification_not_found = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND, detail="Bildirishnoma topilmadi"
 )
+
+# 12-Qavat: NotificationType qiymatini UserSettings ustun nomiga bog'laydi —
+# yangi trigger turi qo'shilganda shu yerga ham bitta qator qo'shish kifoya.
+_SETTINGS_FIELD_BY_TYPE = {
+    NotificationType.task_due: "notify_task_due",
+    NotificationType.budget_exceeded: "notify_budget_exceeded",
+    NotificationType.habit_streak_broken: "notify_habit_streak_broken",
+}
 
 
 async def create_notification(
@@ -40,7 +49,19 @@ async def create_notification(
     """Yangi bildirishnoma yaratadi. Agar shu `dedupe_key` uchun bildirishnoma
     allaqachon mavjud bo'lsa (masalan avvalgi scheduler yugurishida
     yaratilgan bo'lsa), `IntegrityError` sokin tutiladi va `None` qaytadi —
-    bu xato emas, oddiy "allaqachon yuborilgan" holati."""
+    bu xato emas, oddiy "allaqachon yuborilgan" holati.
+
+    12-Qavat: yaratishdan oldin foydalanuvchining `UserSettings`idagi shu
+    turdagi kanal yoqilganini tekshiradi. Agar foydalanuvchi hali
+    sozlamalar qatoriga ega bo'lmasa (12-Qavatdan oldingi foydalanuvchi),
+    standart holat "yoqilgan" deb qabul qilinadi — bu eski xulq-atvorni
+    o'zgartirmaydi."""
+    user_settings = await get_settings_by_user_id(db, user_id)
+    if user_settings is not None:
+        settings_field = _SETTINGS_FIELD_BY_TYPE.get(notif_type)
+        if settings_field is not None and not getattr(user_settings, settings_field):
+            return None
+
     notification = Notification(
         user_id=user_id,
         type=notif_type,

@@ -27,10 +27,44 @@ body {
   --pos-danger: #b91c1c;
   --pos-danger-bg: #fef2f2;
   --pos-danger-border: #fecaca;
+  --pos-success: #15803d;
+  --pos-page-bg: #ffffff;
   --pos-radius: 8px;
   --pos-radius-sm: 6px;
   --pos-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
   --pos-transition: 0.15s ease;
+}
+
+/* ============================================================
+   12-Qavat: Profile & Settings — tema (dark/light).
+   `ThemeContext.jsx` `<html>` elementiga `data-theme="dark"` yoki
+   `data-theme="light"` atributini qo'yadi (foydalanuvchi tanloviga yoki
+   OS afzalligiga qarab hisoblangan holda) — shu atribut orqali quyidagi
+   o'zgaruvchilar almashtiriladi. Butun ilova shu bir xil `--pos-*`
+   o'zgaruvchilardan foydalangani uchun (yuqoridagi izohga qarang),
+   alohida "dark" versiyasini har bir komponentda qayta yozish shart emas.
+   ============================================================ */
+:root[data-theme="dark"] {
+  --pos-primary: #3b82f6;
+  --pos-primary-hover: #60a5fa;
+  --pos-primary-bg: #1e293b;
+  --pos-text: #e5e7eb;
+  --pos-muted: #9ca3af;
+  --pos-surface: #1c1f26;
+  --pos-surface-muted: #23262f;
+  --pos-border: #343841;
+  --pos-danger: #f87171;
+  --pos-danger-bg: #3a1d1d;
+  --pos-danger-border: #7f1d1d;
+  --pos-success: #4ade80;
+  --pos-page-bg: #12141a;
+  --pos-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  background: var(--pos-page-bg);
+  color: var(--pos-text);
+  transition: background-color var(--pos-transition), color var(--pos-transition);
 }
 
 /* Umumiy element uslubi — modullar bir xil ko'rinishga ega bo'ladi,
@@ -183,7 +217,7 @@ textarea:focus-visible,
 .feedback-error-retry {
   padding: 0.3rem 0.7rem;
   font-size: 0.8rem;
-  background: #fff;
+  background: var(--pos-surface);
   flex-shrink: 0;
 }
 
@@ -225,12 +259,12 @@ textarea:focus-visible,
 }
 
 .auth-error {
-  color: #c0392b;
+  color: var(--pos-danger);
   font-size: 0.9rem;
 }
 
 .auth-success {
-  color: #27ae60;
+  color: var(--pos-success);
   font-size: 0.9rem;
 }
 
@@ -242,7 +276,7 @@ textarea:focus-visible,
 .link-button {
   background: none;
   border: none;
-  color: #2563eb;
+  color: var(--pos-primary);
   cursor: pointer;
   padding: 0;
   font-size: inherit;
@@ -250,7 +284,7 @@ textarea:focus-visible,
 }
 
 .muted {
-  color: #666;
+  color: var(--pos-muted);
   font-size: 0.85rem;
 }
 
@@ -1250,8 +1284,8 @@ textarea:focus-visible,
   max-width: calc(100vw - 2rem);
   max-height: 420px;
   overflow-y: auto;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
   border-radius: 0.5rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   padding: 0.75rem;
@@ -1387,11 +1421,11 @@ textarea:focus-visible,
 }
 
 .dash-stat-warning {
-  color: #c0392b;
+  color: var(--pos-danger);
 }
 
 .dash-stat-positive {
-  color: #15803d;
+  color: var(--pos-success);
 }
 
 .dash-mini-list {
@@ -1690,4 +1724,225 @@ textarea:focus-visible,
     align-items: flex-start;
     gap: 0.15rem;
   }
+
+  .profile-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-avatar-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-danger-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .theme-option-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
+
+/* ============================================================
+   12-Qavat: Profile & Settings moduli
+   ============================================================ */
+.profile-page {
+  max-width: 640px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--pos-border);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.profile-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 0.6rem 0.25rem;
+  color: var(--pos-muted);
+  font-weight: 500;
+}
+
+.profile-tab:hover {
+  background: none;
+  color: var(--pos-text);
+}
+
+.profile-tab-active {
+  color: var(--pos-primary);
+  border-bottom-color: var(--pos-primary);
+}
+
+.profile-tab-panel {
+  max-width: 420px;
+}
+
+.profile-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  text-align: left;
+  width: 100%;
+}
+
+.profile-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-avatar-preview {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--pos-border);
+  flex-shrink: 0;
+  background: var(--pos-surface-muted);
+}
+
+.profile-danger-zone {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--pos-danger-border);
+}
+
+.profile-danger-zone h3 {
+  margin: 0 0 0.4rem;
+  color: var(--pos-danger);
+}
+
+.profile-danger-confirm {
+  margin-top: 0.75rem;
+  padding: 0.85rem;
+  background: var(--pos-danger-bg);
+  border: 1px solid var(--pos-danger-border);
+  border-radius: var(--pos-radius-sm);
+}
+
+.profile-danger-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.danger-button {
+  color: var(--pos-danger);
+  border-color: var(--pos-danger-border);
+}
+
+.danger-button:hover {
+  background: var(--pos-danger-bg);
+}
+
+.notification-prefs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notification-prefs-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-sm);
+  background: var(--pos-surface);
+}
+
+.notification-prefs-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.notification-prefs-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.1rem;
+}
+
+/* Oddiy toggle-switch — mavjud checkbox uslubidan ataylab farqlanadi,
+   chunki bu yerda "yoqilgan/o'chirilgan" holatini bir qarashda ko'rsatish
+   muhim (13-Qavatda umumiy `Switch` UI-kit komponentiga ko'chirilishi
+   mumkin). */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 2.6rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-track {
+  position: absolute;
+  inset: 0;
+  background: var(--pos-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--pos-transition);
+}
+
+.switch-track::before {
+  content: "";
+  position: absolute;
+  width: 1.15rem;
+  height: 1.15rem;
+  left: 0.175rem;
+  top: 0.175rem;
+  background: var(--pos-surface);
+  border-radius: 50%;
+  transition: transform var(--pos-transition);
+  box-shadow: var(--pos-shadow-sm);
+}
+
+.switch input:checked + .switch-track {
+  background: var(--pos-primary);
+}
+
+.switch input:checked + .switch-track::before {
+  transform: translateX(1.1rem);
+}
+
+.switch input:disabled + .switch-track {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.theme-option-group {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.theme-option-active {
+  background: var(--pos-primary-bg);
+  border-color: var(--pos-primary);
+  color: var(--pos-primary);
+  font-weight: 500;
+}
+

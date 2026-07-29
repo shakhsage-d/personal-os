@@ -46,7 +46,33 @@ class UserOut(BaseModel):
     id: uuid.UUID
     email: EmailStr
     full_name: str | None
+    avatar_url: str | None
+    locale: str
+    timezone: str
     is_active: bool
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class UserProfileUpdate(BaseModel):
+    """12-Qavat: `PATCH /auth/me` — barcha maydonlar ixtiyoriy (qisman
+    yangilash uchun `exclude_unset=True` bilan ishlatiladi, boshqa modullardagi
+    `*Update` sxemalari naqshiga muvofiq)."""
+
+    full_name: str | None = Field(default=None, max_length=255)
+    avatar_url: str | None = Field(default=None, max_length=1024)
+    locale: str | None = Field(default=None, min_length=2, max_length=10)
+    timezone: str | None = Field(default=None, min_length=1, max_length=64)
+
+
+class PasswordChangeRequest(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8, max_length=128)
+
+    @field_validator("new_password")
+    @classmethod
+    def new_password_must_contain_digit(cls, value: str) -> str:
+        if not any(char.isdigit() for char in value):
+            raise ValueError("Parolda kamida bitta raqam bo'lishi kerak")
+        return value

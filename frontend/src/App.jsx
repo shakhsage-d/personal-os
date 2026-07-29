@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
+import { ThemeProvider } from './shared/theme/ThemeContext'
 import { LoginPage } from './features/auth/LoginPage'
 import { RegisterPage } from './features/auth/RegisterPage'
 import { DashboardPage } from './features/dashboard/DashboardPage'
@@ -8,6 +9,7 @@ import { TasksPage } from './features/tasks/TasksPage'
 import { CalendarPage } from './features/calendar/CalendarPage'
 import { FinancePage } from './features/finance/FinancePage'
 import { HabitsPage } from './features/habits/HabitsPage'
+import { ProfilePage } from './features/profile/ProfilePage'
 import { NotificationsBell } from './features/notifications/NotificationsBell'
 import './App.css'
 
@@ -61,6 +63,13 @@ function AuthenticatedHome({ view, setView }) {
           >
             Odatlar
           </button>
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => setView('profile')}
+          >
+            Profil
+          </button>
         </nav>
         <div className="app-user">
           <NotificationsBell />
@@ -76,6 +85,7 @@ function AuthenticatedHome({ view, setView }) {
       {view === 'calendar' && <CalendarPage />}
       {view === 'finance' && <FinancePage />}
       {view === 'habits' && <HabitsPage />}
+      {view === 'profile' && <ProfilePage />}
     </div>
   )
 }
@@ -98,7 +108,7 @@ function UnauthenticatedHome() {
 function AppContent() {
   const { isAuthenticated } = useAuth()
   const [view, setView] = useState('goals') // 'home' | 'goals'
-  const isWide = isAuthenticated && (view === 'home' || view === 'goals' || view === 'tasks' || view === 'calendar' || view === 'finance' || view === 'habits')
+  const isWide = isAuthenticated && (view === 'home' || view === 'goals' || view === 'tasks' || view === 'calendar' || view === 'finance' || view === 'habits' || view === 'profile')
 
   return (
     <section id="center" className={isWide ? 'wide' : ''}>
@@ -114,7 +124,9 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </AuthProvider>
   )
 }

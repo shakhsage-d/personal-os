@@ -4,6 +4,7 @@ foydalanuvchi. Bu — `core` qatlamining bir qismi, alohida modul emas
 (asosiy prompt, 3-bo'lim: "auth, user ... alohida core/shared qatlamda").
 """
 import uuid
+from datetime import datetime, timezone as dt_timezone
 
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -14,11 +15,13 @@ from app.core.database import get_db
 from app.core.deps import get_current_user
 from app.core.models import User
 from app.core.schemas_auth import (
+    PasswordChangeRequest,
     PushTokenRegister,
     RefreshRequest,
     TokenPair,
     UserLogin,
     UserOut,
+    UserProfileUpdate,
     UserRegister,
 )
 from app.core.security import (
@@ -101,6 +104,54 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)) -
 @router.get("/me", response_model=UserOut)
 async def read_current_user(current_user: User = Depends(get_current_user)) -> User:
     return current_user
+
+
+@router.patch("/me", response_model=UserOut)
+async def update_current_user(
+    payload: UserProfileUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    """12-Qavat: profil maydonlarini qisman yangilash (faqat yuborilgan
+    maydonlar o'zgaradi — boshqa modullardagi `exclude_unset` naqshiga
+    muvofiq)."""
+    update_data = payload.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(current_user, field, value)
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
+
+@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT)
+async def change_password(
+    payload: PasswordChangeRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> None:
+    """12-Qavat: parol o'zgartirish — eski parol talab qilinadi (roadmap
+    v1.1, 12-Qavat DoD)."""
+    if not verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Joriy parol noto'g'ri"
+        )
+    current_user.hashed_password = hash_password(payload.new_password)
+    await db.commit()
+
+
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_current_user(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> None:
+    """12-Qavat: hisobni o'chirish — soft-delete. Ma'lumotlar (Goals, Tasks,
+    Finance va h.k.) darhol o'chirilmaydi, faqat foydalanuvchi bloklanadi
+    (`is_active=False`) va `deleted_at` belgilanadi. Haqiqiy tozalash
+    (hard-delete) — kelajakda alohida admin/cron vazifasi sifatida qo'shilishi
+    mumkin, bu qavat doirasidan tashqarida."""
+    current_user.is_active = False
+    current_user.deleted_at = datetime.now(dt_timezone.utc)
+    await db.commit()
 
 
 @router.post("/push-token", status_code=status.HTTP_204_NO_CONTENT)
