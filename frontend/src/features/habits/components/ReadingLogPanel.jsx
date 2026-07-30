@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Select, Button } from "../../../shared/ui";
 
 const STATUS_LABELS = {
   planned: "Rejalashtirilgan",
@@ -35,22 +36,24 @@ export function ReadingLogPanel({ logs, onCreate, onUpdateStatus, onDelete }) {
       <h3>O'qigan narsalar</h3>
 
       <form className="reading-log-form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           placeholder="Kitob/maqola nomi"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          aria-label="Kitob/maqola nomi"
         />
-        <input
+        <Input
           type="text"
           placeholder="Muallif (ixtiyoriy)"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+          aria-label="Muallif"
         />
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           {isSubmitting ? "Saqlanmoqda..." : "+ Qo'shish"}
-        </button>
+        </Button>
       </form>
 
       {logs.length === 0 && <p className="muted">Hali hech narsa qo'shilmagan.</p>}
@@ -63,19 +66,18 @@ export function ReadingLogPanel({ logs, onCreate, onUpdateStatus, onDelete }) {
               {log.author && <span className="muted reading-log-author"> — {log.author}</span>}
             </div>
             <div className="reading-log-item-actions">
-              <select
+              <Select
                 value={log.status}
                 onChange={(e) => onUpdateStatus(log.id, e.target.value)}
-              >
-                {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-              <button type="button" className="link-button" onClick={() => onDelete(log.id)}>
+                aria-label="O'qish holati"
+                options={Object.entries(STATUS_LABELS).map(([value, label]) => ({
+                  value,
+                  label,
+                }))}
+              />
+              <Button variant="ghost" onClick={() => onDelete(log.id)}>
                 o'chirish
-              </button>
+              </Button>
             </div>
           </li>
         ))}

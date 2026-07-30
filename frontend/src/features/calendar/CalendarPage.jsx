@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
-import { Spinner, ErrorBanner } from "../../shared/ui/Feedback";
+import { Spinner, ErrorBanner, EmptyState } from "../../shared/ui/Feedback";
+import { Button, Input } from "../../shared/ui";
 import { createCalendarApi } from "./api";
 import { CalendarDayCell } from "./components/CalendarDayCell";
 
@@ -40,6 +41,7 @@ export function CalendarPage() {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const monthDays = useMemo(
     () => buildMonthGrid(cursor.getFullYear(), cursor.getMonth()),
@@ -98,22 +100,36 @@ export function CalendarPage() {
   return (
     <div className="calendar-page">
       <div className="calendar-toolbar">
-        <button type="button" onClick={goToPreviousMonth}>
+        <Button variant="ghost" onClick={goToPreviousMonth}>
           &larr; Oldingi
-        </button>
+        </Button>
         <h2 className="calendar-month-title">
           {MONTH_LABELS[cursor.getMonth()]} {cursor.getFullYear()}
         </h2>
-        <button type="button" onClick={goToNextMonth}>
+        <Button variant="ghost" onClick={goToNextMonth}>
           Keyingi &rarr;
-        </button>
-        <button type="button" onClick={goToToday}>
+        </Button>
+        <Button variant="ghost" onClick={goToToday}>
           Bugun
-        </button>
+        </Button>
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Voqealarni qidirish..."
+          aria-label="Voqealarni qidirish"
+          className="calendar-search-input"
+        />
       </div>
 
       <ErrorBanner message={error} onRetry={loadEvents} />
       {isLoading && <Spinner />}
+      {!isLoading && events.length === 0 && (
+        <EmptyState
+          icon="📅"
+          title="Bu oyda hech qanday voqea yo'q"
+          hint="Maqsad yoki vazifa qo'shsangiz, shu yerda ko'rinadi."
+        />
+      )}
 
       <div className="calendar-grid">
         {WEEKDAY_LABELS.map((label) => (
@@ -132,6 +148,7 @@ export function CalendarPage() {
               isCurrentMonth={day.getMonth() === cursor.getMonth()}
               isToday={iso === todayIso}
               events={eventsByDate.get(iso) || []}
+              searchQuery={searchQuery}
             />
           );
         })}

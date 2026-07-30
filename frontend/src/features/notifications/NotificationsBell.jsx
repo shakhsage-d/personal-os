@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
 import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
+import { Select, Button } from "../../shared/ui";
 import { createNotificationsApi } from "./api";
 
 // 7-Qavat: Notifications — markazlashtirilgan bildirishnomalar markazi
@@ -34,6 +35,8 @@ export function NotificationsBell() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [typeFilter, setTypeFilter] = useState("");
+  const [readFilter, setReadFilter] = useState("");
   const panelRef = useRef(null);
 
   const refreshUnreadCount = useCallback(async () => {
@@ -113,6 +116,13 @@ export function NotificationsBell() {
     }
   }
 
+  const visibleNotifications = notifications.filter((n) => {
+    if (typeFilter && n.type !== typeFilter) return false;
+    if (readFilter === "unread" && n.is_read) return false;
+    if (readFilter === "read" && !n.is_read) return false;
+    return true;
+  });
+
   return (
     <div className="notifications-bell" ref={panelRef}>
       <button
@@ -131,9 +141,33 @@ export function NotificationsBell() {
         <div className="notifications-panel">
           <div className="notifications-panel-header">
             <strong>Bildirishnomalar</strong>
-            <button type="button" className="link-button" onClick={handleMarkAllRead}>
+            <Button variant="ghost" size="sm" onClick={handleMarkAllRead}>
               Barchasini o'qilgan deb belgilash
-            </button>
+            </Button>
+          </div>
+
+          <div className="notifications-filters">
+            <Select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              aria-label="Turi bo'yicha filtr"
+              options={[
+                { value: "", label: "Barcha turlar" },
+                { value: "task_due", label: "Vazifa" },
+                { value: "budget_exceeded", label: "Byudjet" },
+                { value: "habit_streak_broken", label: "Odat" },
+              ]}
+            />
+            <Select
+              value={readFilter}
+              onChange={(e) => setReadFilter(e.target.value)}
+              aria-label="Holat bo'yicha filtr"
+              options={[
+                { value: "", label: "Barchasi" },
+                { value: "unread", label: "O'qilmagan" },
+                { value: "read", label: "O'qilgan" },
+              ]}
+            />
           </div>
 
           {isLoading && <Spinner />}
@@ -144,9 +178,14 @@ export function NotificationsBell() {
               <EmptyState icon="🔔" title="Hozircha bildirishnoma yo'q" />
             </div>
           )}
+          {!isLoading && notifications.length > 0 && visibleNotifications.length === 0 && (
+            <div className="notifications-empty">
+              <EmptyState icon="🔍" title="Bu filtrga mos bildirishnoma yo'q" />
+            </div>
+          )}
 
           <ul className="notifications-list">
-            {notifications.map((notification) => (
+            {visibleNotifications.map((notification) => (
               <li
                 key={notification.id}
                 className={`notification-item${notification.is_read ? "" : " notification-item-unread"}`}
@@ -163,21 +202,13 @@ export function NotificationsBell() {
                 <div className="notification-message">{notification.message}</div>
                 <div className="notification-item-actions">
                   {!notification.is_read && (
-                    <button
-                      type="button"
-                      className="link-button"
-                      onClick={() => handleMarkRead(notification.id)}
-                    >
+                    <Button variant="ghost" size="sm" onClick={() => handleMarkRead(notification.id)}>
                       O'qildi
-                    </button>
+                    </Button>
                   )}
-                  <button
-                    type="button"
-                    className="link-button"
-                    onClick={() => handleRemove(notification.id)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => handleRemove(notification.id)}>
                     O'chirish
-                  </button>
+                  </Button>
                 </div>
               </li>
             ))}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Select, Button } from "../../../shared/ui";
 
 // TransactionForm naqshiga muvofiq — yangi odat qo'shish formasi.
 export function HabitForm({ onSubmit }) {
@@ -28,38 +29,36 @@ export function HabitForm({ onSubmit }) {
   return (
     <form className="habit-form" onSubmit={handleSubmit}>
       <div className="habit-form-row">
-        <label className="habit-form-name">
-          Odat nomi
-          <input
-            type="text"
-            placeholder="masalan, Sport qilish"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Chastota
-          <select value={frequency} onChange={(e) => setFrequency(e.target.value)}>
-            <option value="daily">Kunlik</option>
-            <option value="weekly">Haftalik</option>
-          </select>
-        </label>
-        <label>
-          {frequency === "weekly" ? "Haftada necha marta" : "Kunda necha marta"}
-          <input
-            type="number"
-            min="1"
-            max="14"
-            value={targetPerPeriod}
-            onChange={(e) => setTargetPerPeriod(e.target.value)}
-          />
-        </label>
+        <Input
+          label="Odat nomi"
+          type="text"
+          placeholder="masalan, Sport qilish"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Select
+          label="Chastota"
+          value={frequency}
+          onChange={(e) => setFrequency(e.target.value)}
+          options={[
+            { value: "daily", label: "Kunlik" },
+            { value: "weekly", label: "Haftalik" },
+          ]}
+        />
+        <Input
+          label={frequency === "weekly" ? "Haftada necha marta" : "Kunda necha marta"}
+          type="number"
+          min="1"
+          max="14"
+          value={targetPerPeriod}
+          onChange={(e) => setTargetPerPeriod(e.target.value)}
+        />
       </div>
 
-      <button type="submit" disabled={isSubmitting}>
+      <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Saqlanmoqda..." : "+ Odat qo'shish"}
-      </button>
+      </Button>
     </form>
   );
 }

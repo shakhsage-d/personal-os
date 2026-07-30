@@ -1,15 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
 import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
-import { Button, Select } from "../../shared/ui";
+import { Button, Select, Input } from "../../shared/ui";
 import { createGoalsApi } from "./api";
 import { GoalForm } from "./components/GoalForm";
 import { GoalCard } from "./components/GoalCard";
+
+const SORT_OPTIONS = [
+  { value: "created_desc", label: "Yangi qo'shilgan" },
+  { value: "target_date_asc", label: "Muddat (yaqin avval)" },
+  { value: "progress_desc", label: "Progress (yuqori avval)" },
+  { value: "title_asc", label: "Nomi (A-Z)" },
+];
+
+function sortGoals(goals, sortBy) {
+  const list = [...goals];
+  switch (sortBy) {
+    case "target_date_asc":
+      return list.sort((a, b) => {
+        if (!a.target_date && !b.target_date) return 0;
+        if (!a.target_date) return 1;
+        if (!b.target_date) return -1;
+        return a.target_date.localeCompare(b.target_date);
+      });
+    case "progress_desc":
+      return list.sort((a, b) => (b.progress_percent || 0) - (a.progress_percent || 0));
+    case "title_asc":
+      return list.sort((a, b) => a.title.localeCompare(b.title));
+    default:
+      return list;
+  }
+}
 
 export function GoalsPage() {
   const { authFetch } = useAuth();
   const [goals, setGoals] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("created_desc");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -94,9 +122,28 @@ export function GoalsPage() {
     }
   }
 
+  const visibleGoals = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const filtered = query
+      ? goals.filter(
+          (goal) =>
+            goal.title.toLowerCase().includes(query) ||
+            (goal.description || "").toLowerCase().includes(query)
+        )
+      : goals;
+    return sortGoals(filtered, sortBy);
+  }, [goals, searchQuery, sortBy]);
+
   return (
     <div className="goals-page">
       <div className="goals-toolbar">
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Maqsadlarni qidirish..."
+          aria-label="Maqsadlarni qidirish"
+          className="goals-search-input"
+        />
         <Select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -107,6 +154,12 @@ export function GoalsPage() {
             { value: "completed", label: "Bajarilgan" },
             { value: "archived", label: "Arxivlangan" },
           ]}
+        />
+        <Select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          aria-label="Saralash"
+          options={SORT_OPTIONS}
         />
         <Button variant="primary" onClick={() => setShowForm((v) => !v)}>
           {showForm ? "Bekor qilish" : "+ Yangi maqsad"}
@@ -124,9 +177,16 @@ export function GoalsPage() {
           hint="Birinchi maqsadingizni qo'shing."
         />
       )}
+      {!isLoading && goals.length > 0 && visibleGoals.length === 0 && (
+        <EmptyState
+          icon="🔍"
+          title="Hech narsa topilmadi"
+          hint="Qidiruv so'zini o'zgartirib ko'ring."
+        />
+      )}
 
       <div className="goals-list">
-        {goals.map((goal) => (
+        {visibleGoals.map((goal) => (
           <GoalCard
             key={goal.id}
             goal={goal}

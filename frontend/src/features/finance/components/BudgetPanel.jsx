@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Select, Button } from "../../../shared/ui";
 
 // Byudjet holatini (limit vs sarflangan) ko'rsatadigan va yangi byudjet
 // qo'shish uchun ixcham forma — GoalCard progress-bar naqshiga muvofiq.
@@ -32,15 +33,20 @@ export function BudgetPanel({ budgets, expenseCategories, year, month, onCreate,
       </h3>
 
       <form className="budget-form" onSubmit={handleSubmit}>
-        <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
-          <option value="">Kategoriya tanlang</option>
-          {expenseCategories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <input
+        <Select
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          required
+          aria-label="Kategoriya tanlash"
+          options={[
+            { value: "", label: "Kategoriya tanlang" },
+            ...expenseCategories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            })),
+          ]}
+        />
+        <Input
           type="number"
           min="0.01"
           step="0.01"
@@ -48,10 +54,11 @@ export function BudgetPanel({ budgets, expenseCategories, year, month, onCreate,
           value={limitAmount}
           onChange={(e) => setLimitAmount(e.target.value)}
           required
+          aria-label="Byudjet limiti"
         />
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           + Byudjet
-        </button>
+        </Button>
       </form>
 
       {budgets.length === 0 ? (
@@ -68,13 +75,9 @@ export function BudgetPanel({ budgets, expenseCategories, year, month, onCreate,
               <li key={budget.id} className="budget-item">
                 <div className="budget-item-header">
                   <span>{budget.category_name}</span>
-                  <button
-                    type="button"
-                    className="link-button"
-                    onClick={() => onDelete(budget.id)}
-                  >
+                  <Button variant="ghost" onClick={() => onDelete(budget.id)}>
                     o'chirish
-                  </button>
+                  </Button>
                 </div>
                 <div className="budget-progress-bar">
                   <div

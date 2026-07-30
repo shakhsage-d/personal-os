@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../../../shared/ui";
 
 function mondayOf(d) {
   const date = new Date(d);
@@ -60,9 +61,9 @@ export function WeeklyReviewPanel({ reviews, onCreate, onDelete }) {
             onChange={(e) => setRating(e.target.value)}
           />
         </label>
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           {isSubmitting ? "Saqlanmoqda..." : "Shu hafta uchun saqlash"}
-        </button>
+        </Button>
       </form>
 
       {reviews.length === 0 && <p className="muted">Hali baholash yo'q.</p>}
@@ -75,13 +76,9 @@ export function WeeklyReviewPanel({ reviews, onCreate, onDelete }) {
               {review.rating != null && (
                 <span className="weekly-review-rating">{review.rating}/10</span>
               )}
-              <button
-                type="button"
-                className="link-button"
-                onClick={() => onDelete(review.id)}
-              >
+              <Button variant="ghost" onClick={() => onDelete(review.id)}>
                 o'chirish
-              </button>
+              </Button>
             </div>
             {review.wins && <p className="muted weekly-review-text">✅ {review.wins}</p>}
             {review.challenges && (

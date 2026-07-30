@@ -651,6 +651,23 @@ textarea:focus-visible,
   color: #94660a;
 }
 
+/* 15c-Qavat: Calendar ichki UX — qidiruv bo'yicha mos/mos bo'lmagan
+   voqealarni ajratib ko'rsatish. */
+.calendar-event-match {
+  outline: 2px solid var(--ui-color-primary, #2952b3);
+  outline-offset: 1px;
+  font-weight: 600;
+}
+
+.calendar-event-dimmed {
+  opacity: 0.35;
+}
+
+.calendar-search-input {
+  margin-left: auto;
+  min-width: 12rem;
+}
+
 /* ============================================================
    5-Qavat: Finance moduli
    ============================================================ */
@@ -806,6 +823,19 @@ textarea:focus-visible,
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
   align-items: start;
+}
+
+/* 15d-Qavat: Finance ichki UX — tranzaksiyalarni qidirish/filtrlash/saralash. */
+.finance-transactions-toolbar {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.finance-search-input {
+  flex: 1;
+  min-width: 10rem;
 }
 
 .transaction-form {
@@ -973,6 +1003,12 @@ textarea:focus-visible,
 
 .habits-toolbar h2 {
   margin: 0;
+}
+
+.habits-search-input {
+  flex: 1;
+  min-width: 10rem;
+  max-width: 20rem;
 }
 
 .habits-show-inactive {
@@ -1262,6 +1298,16 @@ textarea:focus-visible,
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #eee;
   font-size: 0.85rem;
+}
+
+.notifications-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.notifications-filters .ui-field {
+  flex: 1;
 }
 
 .notifications-empty {
@@ -1681,6 +1727,11 @@ textarea:focus-visible,
     width: 100%;
   }
 
+  .calendar-search-input {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .calendar-day-cell {
     min-height: 4.5rem;
     padding: 0.35rem;
@@ -1720,6 +1771,14 @@ textarea:focus-visible,
     grid-template-columns: 1fr;
   }
 
+  .finance-transactions-toolbar {
+    flex-direction: column;
+  }
+
+  .finance-transactions-toolbar select {
+    width: 100%;
+  }
+
   .category-form,
   .budget-form,
   .savings-form {
@@ -1754,6 +1813,10 @@ textarea:focus-visible,
   .habits-toolbar {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .habits-search-input {
+    max-width: none;
   }
 
   .habit-form-row {
@@ -1798,6 +1861,10 @@ textarea:focus-visible,
 
   .notification-item-header {
     flex-wrap: wrap;
+  }
+
+  .notifications-filters {
+    flex-direction: column;
   }
 
   .notification-item-actions {

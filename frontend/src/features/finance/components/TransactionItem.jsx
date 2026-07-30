@@ -1,4 +1,6 @@
 // TaskItem naqshiga muvofiq — ro'yxatdagi bitta tranzaksiya qatori.
+import { Button } from "../../../shared/ui";
+
 export function TransactionItem({ transaction, onDelete }) {
   const sign = transaction.type === "income" ? "+" : "-";
   const amountClass =
@@ -23,9 +25,9 @@ export function TransactionItem({ transaction, onDelete }) {
 
       <div className="transaction-item-actions">
         <span className="transaction-date">{transaction.occurred_on}</span>
-        <button type="button" className="link-button" onClick={onDelete}>
+        <Button variant="ghost" onClick={onDelete}>
           o'chirish
-        </button>
+        </Button>
       </div>
     </li>
   );

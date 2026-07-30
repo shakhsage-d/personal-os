@@ -1,11 +1,38 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../shared/auth/AuthContext";
 import { Spinner, EmptyState, ErrorBanner } from "../../shared/ui/Feedback";
-import { Button, Select } from "../../shared/ui";
+import { Button, Select, Input } from "../../shared/ui";
 import { createGoalsApi } from "../goals/api";
 import { createTasksApi } from "./api";
 import { TaskForm } from "./components/TaskForm";
 import { TaskItem } from "./components/TaskItem";
+
+const SORT_OPTIONS = [
+  { value: "due_asc", label: "Muddat (yaqin avval)" },
+  { value: "priority_desc", label: "Ustuvorlik (yuqori avval)" },
+  { value: "title_asc", label: "Nomi (A-Z)" },
+];
+
+const PRIORITY_RANK = { high: 0, medium: 1, low: 2 };
+
+function sortTasks(tasks, sortBy) {
+  const list = [...tasks];
+  switch (sortBy) {
+    case "priority_desc":
+      return list.sort(
+        (a, b) => (PRIORITY_RANK[a.priority] ?? 3) - (PRIORITY_RANK[b.priority] ?? 3)
+      );
+    case "title_asc":
+      return list.sort((a, b) => a.title.localeCompare(b.title));
+    default:
+      return list.sort((a, b) => {
+        if (!a.due_date && !b.due_date) return 0;
+        if (!a.due_date) return 1;
+        if (!b.due_date) return -1;
+        return a.due_date.localeCompare(b.due_date);
+      });
+  }
+}
 
 export function TasksPage() {
   const { authFetch } = useAuth();
@@ -14,6 +41,8 @@ export function TasksPage() {
   const [goalFilter, setGoalFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("due_asc");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -83,9 +112,24 @@ export function TasksPage() {
     }
   }
 
+  const visibleTasks = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const filtered = query
+      ? tasks.filter((task) => task.title.toLowerCase().includes(query))
+      : tasks;
+    return sortTasks(filtered, sortBy);
+  }, [tasks, searchQuery, sortBy]);
+
   return (
     <div className="tasks-page">
       <div className="tasks-toolbar">
+        <Input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Vazifalarni qidirish..."
+          aria-label="Vazifalarni qidirish"
+          className="tasks-search-input"
+        />
         <Select
           value={goalFilter}
           onChange={(e) => setGoalFilter(e.target.value)}
@@ -117,6 +161,12 @@ export function TasksPage() {
             { value: "high", label: "Yuqori" },
           ]}
         />
+        <Select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          aria-label="Saralash"
+          options={SORT_OPTIONS}
+        />
         <Button variant="primary" onClick={() => setShowForm((v) => !v)}>
           {showForm ? "Bekor qilish" : "+ Yangi vazifa"}
         </Button>
@@ -133,9 +183,12 @@ export function TasksPage() {
           hint="Birinchi vazifangizni qo'shing."
         />
       )}
+      {!isLoading && tasks.length > 0 && visibleTasks.length === 0 && (
+        <EmptyState icon="🔍" title="Hech narsa topilmadi" hint="Qidiruv so'zini o'zgartirib ko'ring." />
+      )}
 
       <ul className="task-list">
-        {tasks.map((task) => (
+        {visibleTasks.map((task) => (
           <TaskItem
             key={task.id}
             task={task}

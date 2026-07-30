@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../../shared/auth/AuthContext";
+import { Button } from "../../../shared/ui";
+import { Spinner, EmptyState, ErrorBanner } from "../../../shared/ui/Feedback";
 import { createTasksApi } from "../api";
 import { TaskForm } from "./TaskForm";
 import { TaskItem } from "./TaskItem";
@@ -57,20 +59,16 @@ export function GoalTasksSection({ goalId }) {
 
   return (
     <div className="goal-tasks-section">
-      <button
-        type="button"
-        className="link-button"
-        onClick={() => setIsOpen((v) => !v)}
-      >
+      <Button variant="ghost" onClick={() => setIsOpen((v) => !v)}>
         {isOpen ? "Vazifalarni yashirish" : "Vazifalarni ko'rsatish"}
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="goal-tasks-body">
-          {error && <p className="auth-error">{error}</p>}
-          {isLoading && <p className="muted">Yuklanmoqda...</p>}
+          <ErrorBanner message={error} />
+          {isLoading && <Spinner />}
           {!isLoading && tasks.length === 0 && (
-            <p className="muted">Bu maqsadga bog'langan vazifa yo'q.</p>
+            <EmptyState icon="✅" title="Bu maqsadga bog'langan vazifa yo'q." />
           )}
 
           {tasks.length > 0 && (
@@ -90,9 +88,9 @@ export function GoalTasksSection({ goalId }) {
           {showForm ? (
             <TaskForm onSubmit={handleCreate} fixedGoalId={goalId} />
           ) : (
-            <button type="button" onClick={() => setShowForm(true)}>
+            <Button variant="secondary" onClick={() => setShowForm(true)}>
               + Vazifa qo'shish
-            </button>
+            </Button>
           )}
         </div>
       )}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Button } from "../../../shared/ui";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -97,9 +98,9 @@ export function TransactionForm({ categories, onSubmit }) {
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <button type="submit" disabled={isSubmitting}>
+      <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Saqlanmoqda..." : "+ Tranzaksiya qo'shish"}
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,5 +1,7 @@
 // TaskItem/TransactionItem naqshiga muvofiq — bitta odat kartasi:
 // streak ko'rsatkichi, bugungi belgilash tugmasi, o'chirish.
+import { Button } from "../../../shared/ui";
+
 const todayIso = () => new Date().toISOString().slice(0, 10);
 
 export function HabitCard({ habit, onToggleToday, onDelete, onArchiveToggle }) {
@@ -28,19 +30,18 @@ export function HabitCard({ habit, onToggleToday, onDelete, onArchiveToggle }) {
       </div>
 
       <div className="habit-card-actions">
-        <button
-          type="button"
-          className={habit.checked_today ? "habit-checkin-done" : ""}
+        <Button
+          variant={habit.checked_today ? "primary" : "secondary"}
           onClick={() => onToggleToday(habit, todayIso())}
         >
           {habit.checked_today ? "✓ Bugun bajarildi" : "Bugun belgilash"}
-        </button>
-        <button type="button" className="link-button" onClick={() => onArchiveToggle(habit)}>
+        </Button>
+        <Button variant="ghost" onClick={() => onArchiveToggle(habit)}>
           {habit.is_active ? "arxivlash" : "faollashtirish"}
-        </button>
-        <button type="button" className="link-button" onClick={() => onDelete(habit)}>
+        </Button>
+        <Button variant="ghost" onClick={() => onDelete(habit)}>
           o'chirish
-        </button>
+        </Button>
       </div>
     </li>
   );

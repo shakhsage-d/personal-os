@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Select, Button } from "../../../shared/ui";
 
 const TYPE_LABELS = { income: "Kirim", expense: "Chiqim" };
 
@@ -25,19 +26,25 @@ export function CategoryManager({ categories, onCreate, onDelete }) {
     <div className="finance-category-manager">
       <h3>Kategoriyalar</h3>
       <form className="category-form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           placeholder="Kategoriya nomi (masalan, Oziq-ovqat)"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          aria-label="Kategoriya nomi"
         />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="expense">Chiqim</option>
-          <option value="income">Kirim</option>
-        </select>
-        <button type="submit" disabled={isSubmitting}>
+        <Select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          aria-label="Kategoriya turi"
+          options={[
+            { value: "expense", label: "Chiqim" },
+            { value: "income", label: "Kirim" },
+          ]}
+        />
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           + Qo'shish
-        </button>
+        </Button>
       </form>
 
       {categories.length === 0 ? (
@@ -50,13 +57,9 @@ export function CategoryManager({ categories, onCreate, onDelete }) {
                 {TYPE_LABELS[category.type]}
               </span>
               <span className="category-name">{category.name}</span>
-              <button
-                type="button"
-                className="link-button"
-                onClick={() => onDelete(category.id)}
-              >
+              <Button variant="ghost" onClick={() => onDelete(category.id)}>
                 o'chirish
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

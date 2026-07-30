@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Input, Button } from "../../../shared/ui";
 
 export function SavingsGoalPanel({ goals, onCreate, onUpdate, onDelete }) {
   const [name, setName] = useState("");
@@ -32,23 +33,25 @@ export function SavingsGoalPanel({ goals, onCreate, onUpdate, onDelete }) {
       <h3>Jamg'arma maqsadlari</h3>
 
       <form className="savings-form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           placeholder="Maqsad nomi (masalan, Mashina)"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          aria-label="Jamg'arma maqsadi nomi"
         />
-        <input
+        <Input
           type="number"
           min="0.01"
           step="0.01"
           placeholder="Maqsad summasi"
           value={targetAmount}
           onChange={(e) => setTargetAmount(e.target.value)}
+          aria-label="Maqsad summasi"
         />
-        <button type="submit" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
           + Qo'shish
-        </button>
+        </Button>
       </form>
 
       {goals.length === 0 ? (
@@ -59,13 +62,9 @@ export function SavingsGoalPanel({ goals, onCreate, onUpdate, onDelete }) {
             <li key={goal.id} className="savings-goal-item">
               <div className="savings-goal-header">
                 <span>{goal.name}</span>
-                <button
-                  type="button"
-                  className="link-button"
-                  onClick={() => onDelete(goal.id)}
-                >
+                <Button variant="ghost" onClick={() => onDelete(goal.id)}>
                   o'chirish
-                </button>
+                </Button>
               </div>
               <div className="goal-progress-bar">
                 <div
@@ -78,13 +77,9 @@ export function SavingsGoalPanel({ goals, onCreate, onUpdate, onDelete }) {
                 {Number(goal.target_amount).toLocaleString("uz-UZ")} (
                 {goal.progress_percent.toFixed(0)}%)
               </div>
-              <button
-                type="button"
-                className="savings-deposit-button"
-                onClick={() => handleDeposit(goal)}
-              >
+              <Button variant="secondary" onClick={() => handleDeposit(goal)}>
                 Summa qo'shish / kamaytirish
-              </button>
+              </Button>
             </li>
           ))}
         </ul>
