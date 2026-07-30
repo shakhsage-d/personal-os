@@ -46,7 +46,7 @@ button {
 
 button:hover {
   background: var(--pos-surface-muted);
-  border-color: #c7c7c7;
+  border-color: var(--pos-border-hover, #c7c7c7);
 }
 
 button:active {
@@ -93,7 +93,7 @@ textarea {
 select:hover,
 input:hover,
 textarea:hover {
-  border-color: #c7c7c7;
+  border-color: var(--pos-border-hover, #c7c7c7);
 }
 
 button:focus-visible,
@@ -262,7 +262,7 @@ textarea:focus-visible,
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--pos-border, #eee);
   padding-bottom: 1rem;
 }
 
@@ -288,7 +288,7 @@ textarea:focus-visible,
 .goal-form {
   max-width: 100%;
   margin-bottom: 1.5rem;
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -308,7 +308,7 @@ textarea:focus-visible,
 }
 
 .goal-card {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 1rem 1.25rem;
 }
@@ -328,27 +328,27 @@ textarea:focus-visible,
   font-size: 0.75rem;
   padding: 0.15rem 0.6rem;
   border-radius: 999px;
-  background: #eee;
+  background: var(--pos-border, #eee);
   white-space: nowrap;
 }
 
 .goal-status-active {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--pos-badge-info-bg, #dbeafe);
+  color: var(--pos-badge-info-text, #1d4ed8);
 }
 
 .goal-status-completed {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--pos-badge-success-bg, #dcfce7);
+  color: var(--pos-badge-success-text, #15803d);
 }
 
 .goal-status-archived {
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--pos-badge-neutral-bg, #f3f4f6);
+  color: var(--pos-muted, #6b7280);
 }
 
 .goal-progress-bar {
-  background: #eee;
+  background: var(--pos-border, #eee);
   border-radius: 999px;
   height: 8px;
   overflow: hidden;
@@ -356,7 +356,7 @@ textarea:focus-visible,
 }
 
 .goal-progress-fill {
-  background: #2563eb;
+  background: var(--pos-primary, #2563eb);
   height: 100%;
   transition: width 0.2s ease;
 }
@@ -385,7 +385,7 @@ textarea:focus-visible,
 
 .milestone-done {
   text-decoration: line-through;
-  color: #999;
+  color: var(--pos-muted, #999);
 }
 
 .milestone-form {
@@ -405,7 +405,7 @@ textarea:focus-visible,
   justify-content: space-between;
   align-items: center;
   margin-top: 0.5rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--pos-border, #f0f0f0);
   padding-top: 0.75rem;
 }
 
@@ -422,7 +422,7 @@ textarea:focus-visible,
 .task-form {
   max-width: 100%;
   margin-bottom: 1.5rem;
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -470,7 +470,7 @@ textarea:focus-visible,
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.65rem 0.9rem;
 }
@@ -490,7 +490,7 @@ textarea:focus-visible,
 
 .task-title-done {
   text-decoration: line-through;
-  color: #999;
+  color: var(--pos-muted, #999);
 }
 
 .task-item-tags {
@@ -505,28 +505,28 @@ textarea:focus-visible,
   font-size: 0.72rem;
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
-  background: #eee;
+  background: var(--pos-border, #eee);
   white-space: nowrap;
 }
 
 .task-priority-high {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--pos-badge-danger-bg, #fee2e2);
+  color: var(--pos-badge-danger-text, #b91c1c);
 }
 
 .task-priority-medium {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--pos-badge-warning-bg, #fef3c7);
+  color: var(--pos-badge-warning-text, #92400e);
 }
 
 .task-priority-low {
-  background: #e5e7eb;
-  color: #4b5563;
+  background: var(--pos-badge-neutral-bg, #e5e7eb);
+  color: var(--pos-badge-neutral-text, #4b5563);
 }
 
 .task-goal-tag {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--pos-badge-info-bg, #dbeafe);
+  color: var(--pos-badge-info-text, #1d4ed8);
 }
 
 .task-item-actions {
@@ -537,7 +537,7 @@ textarea:focus-visible,
 
 .goal-tasks-section {
   margin-top: 0.75rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--pos-border, #f0f0f0);
   padding-top: 0.75rem;
 }
 
@@ -571,14 +571,14 @@ textarea:focus-visible,
 .calendar-weekday-label {
   text-align: center;
   font-weight: 600;
-  color: #666;
+  color: var(--pos-muted, #666);
   font-size: 0.85rem;
   padding-bottom: 0.25rem;
 }
 
 .calendar-day-cell {
   min-height: 6.5rem;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--pos-border, #e5e5e5);
   border-radius: 6px;
   padding: 0.4rem;
   box-sizing: border-box;
@@ -588,12 +588,12 @@ textarea:focus-visible,
 }
 
 .calendar-day-cell-muted {
-  background: #fafafa;
-  color: #aaa;
+  background: var(--pos-surface-muted, #fafafa);
+  color: var(--pos-muted, #aaa);
 }
 
 .calendar-day-cell-today {
-  border-color: #4a7dfc;
+  border-color: var(--pos-primary, #4a7dfc);
   border-width: 2px;
 }
 
@@ -637,24 +637,24 @@ textarea:focus-visible,
 }
 
 .calendar-event-task {
-  background: #eaf1ff;
-  color: #2952b3;
+  background: var(--pos-badge-info-bg, #eaf1ff);
+  color: var(--pos-primary-hover, #2952b3);
 }
 
 .calendar-event-goal {
-  background: #eafaf0;
-  color: #21794b;
+  background: var(--pos-badge-success-bg, #eafaf0);
+  color: var(--pos-badge-success-text, #21794b);
 }
 
 .calendar-event-milestone {
-  background: #fff6e0;
-  color: #94660a;
+  background: var(--pos-badge-warning-bg, #fff6e0);
+  color: var(--pos-badge-warning-text, #94660a);
 }
 
 /* 15c-Qavat: Calendar ichki UX — qidiruv bo'yicha mos/mos bo'lmagan
    voqealarni ajratib ko'rsatish. */
 .calendar-event-match {
-  outline: 2px solid var(--ui-color-primary, #2952b3);
+  outline: 2px solid var(--ui-color-primary, var(--pos-primary-hover, #2952b3));
   outline-offset: 1px;
   font-weight: 600;
 }
@@ -695,7 +695,7 @@ textarea:focus-visible,
 .finance-category-manager,
 .finance-budget-panel,
 .finance-savings-panel {
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -748,13 +748,13 @@ textarea:focus-visible,
 }
 
 .category-type-income {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--pos-badge-success-bg, #dcfce7);
+  color: var(--pos-badge-success-text, #15803d);
 }
 
 .category-type-expense {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--pos-badge-danger-bg, #fee2e2);
+  color: var(--pos-badge-danger-text, #b91c1c);
 }
 
 .finance-summary-cards {
@@ -765,7 +765,7 @@ textarea:focus-visible,
 }
 
 .finance-summary-card {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.85rem 1rem;
   display: flex;
@@ -775,7 +775,7 @@ textarea:focus-visible,
 
 .finance-summary-label {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--pos-muted, #666);
 }
 
 .finance-summary-value {
@@ -784,19 +784,19 @@ textarea:focus-visible,
 }
 
 .finance-summary-income .finance-summary-value {
-  color: #15803d;
+  color: var(--pos-badge-success-text, #15803d);
 }
 
 .finance-summary-expense .finance-summary-value {
-  color: #b91c1c;
+  color: var(--pos-badge-danger-text, #b91c1c);
 }
 
 .finance-summary-net-positive .finance-summary-value {
-  color: #1d4ed8;
+  color: var(--pos-badge-info-text, #1d4ed8);
 }
 
 .finance-summary-net-negative .finance-summary-value {
-  color: #b91c1c;
+  color: var(--pos-badge-danger-text, #b91c1c);
 }
 
 .finance-charts-row {
@@ -808,7 +808,7 @@ textarea:focus-visible,
 .finance-chart-box {
   flex: 1;
   min-width: 0;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.75rem 1rem;
 }
@@ -842,7 +842,7 @@ textarea:focus-visible,
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -885,7 +885,7 @@ textarea:focus-visible,
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.6rem 0.9rem;
 }
@@ -904,12 +904,12 @@ textarea:focus-visible,
 }
 
 .transaction-amount-income {
-  color: #15803d;
+  color: var(--pos-badge-success-text, #15803d);
   font-weight: 700;
 }
 
 .transaction-amount-expense {
-  color: #b91c1c;
+  color: var(--pos-badge-danger-text, #b91c1c);
   font-weight: 700;
 }
 
@@ -917,8 +917,8 @@ textarea:focus-visible,
   font-size: 0.72rem;
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--pos-badge-info-bg, #dbeafe);
+  color: var(--pos-badge-info-text, #1d4ed8);
   white-space: nowrap;
 }
 
@@ -934,13 +934,13 @@ textarea:focus-visible,
 
 .transaction-date {
   font-size: 0.78rem;
-  color: #666;
+  color: var(--pos-muted, #666);
   white-space: nowrap;
 }
 
 .budget-item,
 .savings-goal-item {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.65rem 0.85rem;
 }
@@ -954,20 +954,20 @@ textarea:focus-visible,
 }
 
 .budget-progress-bar {
-  background: #eee;
+  background: var(--pos-border, #eee);
   border-radius: 999px;
   height: 8px;
   overflow: hidden;
 }
 
 .budget-progress-fill {
-  background: #2563eb;
+  background: var(--pos-primary, #2563eb);
   height: 100%;
   transition: width 0.2s ease;
 }
 
 .budget-progress-over {
-  background: #dc2626;
+  background: var(--pos-danger, #dc2626);
 }
 
 .budget-item-numbers {
@@ -976,7 +976,7 @@ textarea:focus-visible,
 }
 
 .budget-over-label {
-  color: #b91c1c;
+  color: var(--pos-badge-danger-text, #b91c1c);
 }
 
 .savings-goal-numbers {
@@ -1016,14 +1016,14 @@ textarea:focus-visible,
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--pos-muted, #666);
 }
 
 .habit-form {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -1071,7 +1071,7 @@ textarea:focus-visible,
   align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.75rem 1rem;
 }
@@ -1102,8 +1102,8 @@ textarea:focus-visible,
   font-size: 0.72rem;
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
-  background: #ede9fe;
-  color: #6d28d9;
+  background: var(--pos-badge-purple-bg, #ede9fe);
+  color: var(--pos-badge-purple-text, #6d28d9);
   white-space: nowrap;
 }
 
@@ -1116,12 +1116,12 @@ textarea:focus-visible,
 }
 
 .habit-streak-current {
-  color: #b45309;
+  color: var(--pos-badge-warning-text, #b45309);
   font-weight: 600;
 }
 
 .habit-streak-longest {
-  color: #444;
+  color: var(--pos-text, #444);
 }
 
 .habit-card-actions {
@@ -1132,9 +1132,9 @@ textarea:focus-visible,
 }
 
 .habit-checkin-done {
-  background: #15803d;
+  background: var(--pos-badge-success-text, #15803d);
   color: #fff;
-  border-color: #15803d;
+  border-color: var(--pos-badge-success-text, #15803d);
 }
 
 .habits-side-grid {
@@ -1145,7 +1145,7 @@ textarea:focus-visible,
 }
 
 .habits-side-panel {
-  background: #f8f9fa;
+  background: var(--pos-surface-muted, #f8f9fa);
   border-radius: 8px;
   padding: 1rem;
 }
@@ -1184,7 +1184,7 @@ textarea:focus-visible,
 
 .reading-log-item,
 .weekly-review-item {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 0.55rem 0.75rem;
 }
@@ -1223,8 +1223,8 @@ textarea:focus-visible,
   font-size: 0.78rem;
   padding: 0.05rem 0.5rem;
   border-radius: 999px;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--pos-badge-info-bg, #dbeafe);
+  color: var(--pos-badge-info-text, #1d4ed8);
 }
 
 .weekly-review-text {
@@ -1243,7 +1243,7 @@ textarea:focus-visible,
 .notifications-bell-button {
   position: relative;
   background: none;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--pos-badge-neutral-bg, #e5e7eb);
   border-radius: 999px;
   width: 2.25rem;
   height: 2.25rem;
@@ -1259,7 +1259,7 @@ textarea:focus-visible,
   position: absolute;
   top: -0.25rem;
   right: -0.25rem;
-  background: #dc2626;
+  background: var(--pos-danger, #dc2626);
   color: #fff;
   font-size: 0.65rem;
   font-weight: 600;
@@ -1296,7 +1296,7 @@ textarea:focus-visible,
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--pos-border, #eee);
   font-size: 0.85rem;
 }
 
@@ -1324,14 +1324,14 @@ textarea:focus-visible,
 }
 
 .notification-item {
-  border: 1px solid #eee;
+  border: 1px solid var(--pos-border, #eee);
   border-radius: 0.4rem;
   padding: 0.5rem 0.6rem;
 }
 
 .notification-item-unread {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  background: var(--pos-primary-bg, #eff6ff);
+  border-color: var(--pos-badge-info-text, #bfdbfe);
 }
 
 .notification-item-header {
@@ -1346,8 +1346,8 @@ textarea:focus-visible,
   font-size: 0.7rem;
   padding: 0.05rem 0.5rem;
   border-radius: 999px;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--pos-badge-info-bg, #dbeafe);
+  color: var(--pos-badge-info-text, #1d4ed8);
 }
 
 .notification-time {
@@ -1363,7 +1363,7 @@ textarea:focus-visible,
 
 .notification-message {
   font-size: 0.82rem;
-  color: #444;
+  color: var(--pos-text, #444);
 }
 
 .notification-item-actions {
@@ -1390,7 +1390,7 @@ textarea:focus-visible,
 }
 
 .dash-card {
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--pos-border, #e2e2e2);
   border-radius: 8px;
   padding: 1rem;
   display: flex;
@@ -1449,7 +1449,7 @@ textarea:focus-visible,
   align-items: baseline;
   gap: 0.75rem;
   font-size: 0.85rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--pos-border, #f0f0f0);
   padding-top: 0.4rem;
 }
 
@@ -1466,7 +1466,7 @@ textarea:focus-visible,
 }
 
 .dash-mini-meta {
-  color: #666;
+  color: var(--pos-muted, #666);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -1514,7 +1514,7 @@ textarea:focus-visible,
 }
 
 .dash-progress-fill-warning {
-  background: #d97706;
+  background: var(--pos-badge-warning-text, #d97706);
 }
 
 .dash-progress-fill-danger {

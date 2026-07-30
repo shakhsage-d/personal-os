@@ -75,6 +75,8 @@
   --pos-badge-warning-text: #92400e;
   --pos-badge-danger-bg: var(--pos-danger-bg);
   --pos-badge-danger-text: var(--pos-danger);
+  --pos-badge-purple-bg: #ede9fe;
+  --pos-badge-purple-text: #6d28d9;
 
   /* --- YANGI (13-Qavat): Modal overlay --- */
   --pos-overlay-bg: rgba(15, 18, 24, 0.45);
@@ -112,6 +114,8 @@
   --pos-badge-info-text: #93c5fd;
   --pos-badge-warning-bg: #3a2c0f;
   --pos-badge-warning-text: #fcd34d;
+  --pos-badge-purple-bg: #2e2350;
+  --pos-badge-purple-text: #c4b5fd;
 
   --pos-overlay-bg: rgba(0, 0, 0, 0.6);
 }
