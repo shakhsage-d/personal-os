@@ -1940,6 +1940,21 @@ textarea:focus-visible,
   .ui-btn {
     min-height: 2.75rem;
   }
+
+  /* 16-Qavat: Command Bar — trigger tugmasi tor ekranda faqat ikonka
+     bilan qoladi (matn yashiriladi), natijalar ro'yxati esa to'liq
+     kenglikda va bosish uchun qulay balandlikda bo'ladi. */
+  .command-bar-trigger span:not([aria-hidden]) {
+    display: none;
+  }
+
+  .command-bar-kbd {
+    display: none;
+  }
+
+  .command-result-item {
+    min-height: 2.75rem;
+  }
 }
 
 /* ============================================================
