@@ -32,7 +32,7 @@ settings = get_settings()
 app = FastAPI(
     title="Personal OS API",
     description="Shaxsiy boshqaruv tizimi — Goals, Tasks, Calendar, Finance, Habits, Notifications",
-    version="0.1.0",
+    version="1.1.0",
 )
 
 register_error_handlers(app)

@@ -1,74 +1,75 @@
-# 14-Qavat: Dashboard v2 — qo'llash yo'riqnomasi
+# Personal OS
 
-Bu papkadagi fayllarni repo'dagi bir xil yo'lga (nisbiy path bir xil)
-ko'chiring va quyidagi tartibda bajaring.
+Shaxsiy boshqaruv tizimi — maqsadlar, vazifalar, kalendar, moliya, odatlar va
+bildirishnomalarni bitta joyda boshqarish uchun API-first web ilova.
 
-## Yangi fayllar
-- `backend/app/modules/dashboard/models.py`
-- `backend/app/modules/dashboard/catalog.py`
-- `backend/alembic/versions/0011_dashboard_widget_config.py`
-- `frontend/src/features/dashboard/widgetRegistry.js`
-- `frontend/src/features/dashboard/components/DashboardSettingsModal.jsx`
+**Holat: v1.1.0** (Web Enhancement bosqichi yakunlangan — 0–18-qavatlar).
+11-Qavat (React Native mobil ilova) alohida, mustaqil yo'nalish sifatida
+`mobile/` papkasida boshlangan (batafsili: `mobile/README.md`).
 
-## O'zgartirilgan fayllar (mavjudlarini almashtiring)
-- `backend/app/modules/dashboard/schemas.py`
-- `backend/app/modules/dashboard/service.py`
-- `backend/app/modules/dashboard/router.py`
-- `frontend/src/features/dashboard/api.js`
-- `frontend/src/features/dashboard/DashboardPage.jsx`
-- `frontend/src/features/dashboard/components/GoalsWidget.jsx`
-- `frontend/src/features/dashboard/components/TasksWidget.jsx`
-- `frontend/src/features/dashboard/components/CalendarWidget.jsx`
-- `frontend/src/features/dashboard/components/FinanceWidget.jsx`
-- `frontend/src/features/dashboard/components/HabitsWidget.jsx`
-- `frontend/src/features/dashboard/components/NotificationsWidget.jsx`
-- `frontend/src/App.css` (faqat qo'shilgan bloklar bor — mavjud fayl bilan
-  solishtirib, "14-Qavat: Dashboard v2" izohli bloklarni qo'shing, boshqa
-  narsani o'zgartirmang)
+## Modullar
 
-## Qo'llash tartibi
+| Modul | Tavsif |
+|---|---|
+| Goals & Plans | Uzoq muddatli maqsadlar, bosqichlar, progress |
+| Tasks | Kunlik/haftalik vazifalar, ustuvorlik, maqsadga bog'lanish |
+| Calendar & Time | Barcha vazifa/reja/eslatmalarning vaqt bo'yicha ko'rinishi |
+| Finance | Kirim/chiqim, byudjet, jamg'arma, ECharts grafiklar |
+| Habits | Odatlar tracker, streak, o'qigan narsalar |
+| Notifications | Markazlashtirilgan bildirishnomalar (APScheduler) |
+| Dashboard | Shaxsiylashtiriladigan widget tizimi |
+| Profile & Settings | Profil, parol, tema (light/dark/system), bildirishnoma afzalliklari |
+| Global qidiruv | `Ctrl+K` / `Cmd+K` — barcha modullar bo'ylab qidiruv va tezkor amallar |
 
-1. Fayllarni ko'chiring (yuqoridagi ro'yxat).
-2. Backend: yangi migratsiyani ishga tushiring:
-   ```
-   cd backend
-   alembic upgrade head
-   ```
-3. Frontend: qo'shimcha kutubxona kerak emas, `npm run build`/`npm run dev`
-   bilan sinab ko'ring.
-4. Sinov qilingan narsalar (mening tomonimdan):
-   - Backend: barcha fayllar `py_compile`dan o'tgan, haqiqiy loyihaviy
-     `requirements.txt` o'rnatilib, `app.main:app` xatosiz yuklangan,
-     `GET /dashboard/summary`, `GET /dashboard/config`,
-     `PUT /dashboard/config` OpenAPI sxemasida to'g'ri ko'ringan.
-   - Katalog mantiqi (`catalog.py`): har bir modulda aniq 2 tadan widget
-     varianti borligi, `merge_with_catalog()` eskirgan kalitlarni olib
-     tashlashi va yangi katalog itemlarini qo'shishi units-test bilan
-     tekshirilgan.
-   - Frontend: `npm run build` muvaffaqiyatli, `oxlint` 0 xato/ogohlantirish
-     bilan o'tgan.
-   - **Sinovdan o'tmagan**: haqiqiy Postgres bazasiga qarshi (RLS siyosati
-     ishlashi, real foydalanuvchi bilan config saqlash/o'qish) — buni real
-     dev muhitingizda tekshirish tavsiya etiladi.
-5. Roadmap fayli (`personal-os-roadmap-v1.1-web-enhancement.md`) sizning
-   Claude loyihangizda saqlangani uchun men uni to'g'ridan-to'g'ri
-   tahrirlay olmadim — 14-Qavat oldidagi `[ ]`ni o'zingiz `[x]`ga
-   o'zgartiring (bandning o'zi: "14-QAVAT — Dashboard v2 (widget tizimi,
-   shaxsiylashtirish)").
-6. Commit + push (masalan):
-   ```
-   git add -A
-   git commit -m "14-Qavat: Dashboard v2 - widget tizimi va shaxsiylashtirish"
-   git push
-   ```
+## Texnik stack
 
-## Qisqacha nima qo'shildi
+- **Backend:** Python 3.14, FastAPI, SQLAlchemy 2.0 (async), PostgreSQL, Alembic, APScheduler
+- **Frontend:** React (Vite), ECharts (moliyaviy grafiklar), markazlashtirilgan UI-kit (`src/shared/ui/`)
+- **Auth:** JWT
+- **Infratuzilma:** Supabase (Postgres) + Render (backend) — $0-byudjet arxitektura
 
-- Backend: `UserDashboardConfig` jadvali (1:1, JSONB `widgets` ustuni,
-  `UserSettings` bilan bir xil naqsh), widget katalogi (har bir modulda
-  2 tadan variant), `GET/PUT /dashboard/config` endpointlari.
-- Frontend: 6 ta yangi widget-variant komponenti, `widgetRegistry.js`
-  orqali widget_key -> komponent bog'lanishi, `DashboardSettingsModal`
-  (UI-kit `Modal`/`Button`/`Input` orqali) — checkbox (yoqish/o'chirish) +
-  tartib-raqam input (`position`), drag-and-drop emas (roadmap
-  "murakkablik oshirilmasin" tamoyiliga muvofiq).
+To'liq texnik qarorlar va sabablar: loyihaning Claude Project fayllarida
+(`personal-os-project-prompt.md`, `personal-os-qoshimcha-qarorlar.md`,
+`personal-os-roadmap*.md`) saqlanadi — bu repo ularning amalga oshirilishi.
+
+## Lokal ishga tushirish
+
+### Backend
+```bash
+cd backend
+python -m venv venv
+# Windows PowerShell:
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cp .env.example .env   # DB ulanish satri, JWT secret va h.k.ni to'ldiring
+alembic upgrade head
+uvicorn app.main:app --reload
+```
+API hujjatlari: `http://localhost:8000/docs`
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Loyiha tuzilmasi
+
+```
+backend/app/
+  core/          # Auth, User, umumiy xato-handlerlar, scheduler
+  modules/       # Har bir modul alohida papkada (goals, tasks, calendar, ...)
+frontend/src/
+  features/      # Har bir modul uchun alohida feature-papka
+  shared/        # UI-kit, tema, auth-context, API client
+mobile/          # React Native (Expo) — 11-Qavat, alohida yo'nalish
+```
+
+Yangi modul qo'shish: mavjud modullarga tegmasdan, yangi
+`backend/app/modules/<nom>/` + `frontend/src/features/<nom>/` papkasi va
+`main.py`da bitta router ro'yxatga olish qatori kifoya.
+
+## Rivojlanish tarixi
+
+Batafsil: `CHANGELOG.md`.
