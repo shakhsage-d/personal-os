@@ -8,16 +8,55 @@
 // vizual natijaga ta'sir qilmaydi.
 import { useEffect, useRef } from "react";
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function Modal({ title, onClose, children, footer }) {
   const dialogRef = useRef(null);
+  const previouslyFocusedRef = useRef(null);
 
   useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", handleKeyDown);
+    // Modal ochilishidan oldin fokusda bo'lgan elementni eslab qolamiz
+    // (masalan "Sozlash" tugmasi) — yopilganda fokus o'shanga qaytariladi,
+    // aks holda klaviatura fokusi sahifa boshiga (yoki hech qayerga)
+    // "yo'qolib" qolardi.
+    previouslyFocusedRef.current = document.activeElement;
     dialogRef.current?.focus();
-    return () => document.removeEventListener("keydown", handleKeyDown);
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      // Focus trap: Tab modal ichidagi fokuslanadigan elementlar
+      // doirasidan chiqmasligi kerak (WCAG 2.4.3 — fokus tartibi).
+      if (event.key === "Tab" && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll(FOCUSABLE_SELECTOR)
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const isShift = event.shiftKey;
+
+        if (!isShift && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        } else if (isShift && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      // Modal yopilgach fokusni chaqiruvchi elementga qaytaramiz.
+      previouslyFocusedRef.current?.focus?.();
+    };
   }, [onClose]);
 
   function handleOverlayClick(event) {
